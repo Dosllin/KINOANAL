@@ -1,29 +1,30 @@
+import json
 from random import randint
 
 
 # Определение классов Film и User
 class Film:
     def __init__(self, id_film, title, genre, director, year, rating):
-        self.id_film = id_film # уникальный идентификатор фильма
-        self.title = title # название фильма
-        self.genre = genre # жанр фильма
-        self.director = director # режиссер фильма
-        self.year = year # год выпуска фильма
-        self.rating = rating # список оценок фильма
+        self.id_film = id_film  # уникальный идентификатор фильма
+        self.title = title  # название фильма
+        self.genre = genre  # жанр фильма
+        self.director = director  # режиссер фильма
+        self.year = year  # год выпуска фильма
+        self.rating = rating  # список оценок фильма
 
     def __str__(self):
-        return f"Film(ID: {self.id_film}, Title: {self.title}, Genre: {self.genre}, Director: {self.director}, Year: {self.year}, Rating: {self.rating})" # строковое представление фильма для удобства вывода
+        return f"Film(ID: {self.id_film}, Title: {self.title}, Genre: {self.genre}, Director: {self.director}, Year: {self.year}, Rating: {self.rating})"  # строковое представление фильма для удобства вывода
 
 
 class User:
     def __init__(self, id_user, name, user_viewed_films, user_genre):
-        self.id_user = id_user # уникальный идентификатор пользователя
-        self.name = name # имя пользователя
-        self.user_viewed_films = user_viewed_films # список просмотренных пользователем фильмов
-        self.user_genre = user_genre # список предпочитаемых жанров пользователя
+        self.id_user = id_user  # уникальный идентификатор пользователя
+        self.name = name  # имя пользователя
+        self.user_viewed_films = user_viewed_films  # список просмотренных пользователем фильмов
+        self.user_genre = user_genre  # список предпочитаемых жанров пользователя
 
     def __str__(self):
-        return f"User(ID: {self.id_user}, Name: {self.name}, Viewed Films: {[film.title for film in self.user_viewed_films]}, Preferred Genre: {self.user_genre})" # строковое представление пользователя для удобства вывода
+        return f"User(ID: {self.id_user}, Name: {self.name}, Viewed Films: {[film.title for film in self.user_viewed_films]}, Preferred Genre: {self.user_genre})"  # строковое представление пользователя для удобства вывода
 
 
 # Список всех жанров фильмов
@@ -45,9 +46,13 @@ class FilmManager():
         film.rating.append(review)  # Добавление оценки к фильму
 
 
-users = {
+# Словарь для хранения пользователей
+with open('user.json', 'r', encoding="UTF-8") as file:  # Открываем файл с пользователями для чтения
+    users = json.load(file)  # Загружаем пользователей из файла в словарь
 
-}  # Сюда добавлять пользователей при регистрации
+# Словарь для хранения фильмов
+with open('films.json', 'r', encoding="UTF-8") as file:  # Открываем файл с фильмами для чтения
+    films_data = json.load(file)  # Загружаем фильмы из файла в словарь
 
 # #### Тестовые данные ####
 # film1 = Film(1, "Inception", "science fiction", "Christopher Nolan", 2010, [9, 10, 8])
@@ -63,7 +68,10 @@ users = {
 # manager1.add_film(film3)
 # manager1.add_user_review(film1, 10)
 # print(user1)
+
+
 last_id = 0  # переменная для отслеживания последнего ID пользователя, чтобы при регистрации создавать уникальные ID
+
 while True:
     print('1. Войти',
           '2. Зарегистрироваться',
@@ -85,9 +93,16 @@ while True:
                                                                           '').lower()  # Убираем пробелы и приводим к нижнему регистру
         new_user = User(last_id + 1, name, [], preferred_genre.split(','))  # Создаем нового пользователя
         last_id += 1  # Обновляем последний ID
-        users[new_user.name] = new_user
+        users[new_user.name] = {
+            'id_user': new_user.id_user,
+            'name': new_user.name,
+            'user_viewed_films': new_user.user_viewed_films,
+            'user_genre': new_user.user_genre
+        }  # Добавляем пользователя в словарь
+        with open(f'user.json', 'w',
+                  encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
+            json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print('Регистрация успешна.')
-        print(new_user)
     elif choice == '3':
         print('Выход из программы')
         break
