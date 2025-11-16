@@ -47,11 +47,16 @@ class FilmManager:
 
 # Словарь для хранения пользователей
 with open('user.json', 'r', encoding="UTF-8") as file:  # Открываем файл с пользователями для чтения
-    users = json.load(file)  # Загружаем пользователей из файла в словарь
-
+    try:
+        users = json.load(file)  # Загружаем пользователей из файла в словарь
+    except json.decoder.JSONDecodeError or FileNotFoundError:
+        users = {}
 # Словарь для хранения фильмов
 with open('films.json', 'r', encoding="UTF-8") as file:  # Открываем файл с фильмами для чтения
-    films_data = json.load(file)  # Загружаем фильмы из файла в словарь
+    try:
+        films_data = json.load(file)  # Загружаем фильмы из файла в словарь
+    except json.decoder.JSONDecodeError or FileNotFoundError:
+        films_data = {}
 
 # #### Тестовые данные ####
 # film1 = Film(1, "Inception", "science fiction", "Christopher Nolan", 2010, [9, 10, 8])
@@ -68,10 +73,16 @@ with open('films.json', 'r', encoding="UTF-8") as file:  # Открываем ф
 # manager1.add_user_review(film1, 10)
 # print(user1)
 
+# переменная для отслеживания последнего ID пользователя, чтобы при регистрации создавать уникальные ID
+last_id = max([users[user]['id_user'] for user in users]) if len(
+    users) > 0 else 0  # В максе ищу самый большой id, чтобы по нему создавать новые, если данных в датабазе нет, то значение равно 0
+print(last_id)
 
-last_id = 0  # переменная для отслеживания последнего ID пользователя, чтобы при регистрации создавать уникальные ID
 
-while True:
+def login_sign_in():
+    global last_id
+    global users
+    global films_data
     print('1. Войти',
           '2. Зарегистрироваться',
           '3. Выйти из программы', sep='\n')
@@ -100,10 +111,15 @@ while True:
         }  # Добавляем пользователя в словарь
         with open(f'user.json', 'w',
                   encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
-            json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
+            json.dump(users, file, indent=4,
+                      ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print('Регистрация успешна.')
     elif choice == '3':
         print('Выход из программы')
-        break
     else:
         print('Некорректный выбор, попробуйте снова.')
+
+
+while True:
+    login_sign_in()
+    print('Добавить фильм в ваши просмотры')
