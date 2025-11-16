@@ -1,5 +1,4 @@
 import json
-from random import randint
 
 
 # Определение классов Film и User
@@ -17,14 +16,14 @@ class Film:
 
 
 class User:
-    def __init__(self, id_user, name, user_viewed_films, user_genre):
+    def __init__(self, id_user, user_name, user_viewed_films, user_genre):
         self.id_user = id_user  # уникальный идентификатор пользователя
-        self.name = name  # имя пользователя
+        self.user_name = user_name  # имя пользователя
         self.user_viewed_films = user_viewed_films  # список просмотренных пользователем фильмов
         self.user_genre = user_genre  # список предпочитаемых жанров пользователя
 
     def __str__(self):
-        return f"User(ID: {self.id_user}, Name: {self.name}, Viewed Films: {[film.title for film in self.user_viewed_films]}, Preferred Genre: {self.user_genre})"  # строковое представление пользователя для удобства вывода
+        return f"User(ID: {self.id_user}, Name: {self.user_name}, Viewed Films: {[film.title for film in self.user_viewed_films]}, Preferred Genre: {self.user_genre})"  # строковое представление пользователя для удобства вывода
 
 
 # Список всех жанров фильмов
@@ -34,7 +33,7 @@ list_all_genre = ["action", "adventure", "animation", "biography", "comedy", "cr
 
 
 # Менеджер для работы с фильмами и пользователями
-class FilmManager():
+class FilmManager:
     def __init__(self, user):
         self.user = user
 
@@ -93,9 +92,9 @@ while True:
                                                                           '').lower()  # Убираем пробелы и приводим к нижнему регистру
         new_user = User(last_id + 1, name, [], preferred_genre.split(','))  # Создаем нового пользователя
         last_id += 1  # Обновляем последний ID
-        users[new_user.name] = {
+        users[new_user.user_name] = {
             'id_user': new_user.id_user,
-            'name': new_user.name,
+            'name': new_user.user_name,
             'user_viewed_films': new_user.user_viewed_films,
             'user_genre': new_user.user_genre
         }  # Добавляем пользователя в словарь
