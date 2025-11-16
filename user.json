@@ -1,0 +1,32 @@
+{
+    "Никита": {
+        "id_user": 1,
+        "name": "Никита",
+        "user_viewed_films": [],
+        "user_genre": [
+            "comedy",
+            "fantasy",
+            "superhero"
+        ]
+    },
+    "Илья": {
+        "id_user": 2,
+        "name": "Илья",
+        "user_viewed_films": [],
+        "user_genre": [
+            "horror",
+            "thriller",
+            "psychological"
+        ]
+    },
+    "Карим": {
+        "id_user": 3,
+        "name": "Карим",
+        "user_viewed_films": [],
+        "user_genre": [
+            "animation",
+            "musical",
+            "western"
+        ]
+    }
+}
