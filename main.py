@@ -1,4 +1,5 @@
 import json
+from abc import ABC
 
 
 # Определение классов Film и User
@@ -74,9 +75,14 @@ with open('films.json', 'r', encoding="UTF-8") as file:  # Открываем ф
 # print(user1)
 
 # переменная для отслеживания последнего ID пользователя, чтобы при регистрации создавать уникальные ID
-last_id = max([users[user]['id_user'] for user in users]) if len(
-    users) > 0 else 0  # В максе ищу самый большой id, чтобы по нему создавать новые, если данных в датабазе нет, то значение равно 0
-print(last_id)
+last_id = max([users[user_name]['id_user'] for user_name in users]) if len(users) > 0 else 0
+# В максе ищу самый большой id, чтобы по нему создавать новые, если данных в датабазе нет, то значение равно 0
+
+
+class Strategy_recomendation(ABC):
+    def __init__(self, user):
+        self.user = user
+
 
 
 def login_sign_in():
@@ -99,20 +105,20 @@ def login_sign_in():
     elif choice == '2':
         name = input('Введите имя: ')
         print('Доступные жанры:', ', '.join(list_all_genre))
-        preferred_genre = input('Введите предпочитаемые жанры: ').replace(' ',
-                                                                          '').lower()  # Убираем пробелы и приводим к нижнему регистру
+        preferred_genre = input('Введите предпочитаемые жанры: ').replace(' ','').lower()  # Убираем пробелы и приводим к нижнему регистру
+
         new_user = User(last_id + 1, name, [], preferred_genre.split(','))  # Создаем нового пользователя
         last_id += 1  # Обновляем последний ID
+
         users[new_user.user_name] = {
             'id_user': new_user.id_user,
             'name': new_user.user_name,
             'user_viewed_films': new_user.user_viewed_films,
             'user_genre': new_user.user_genre
         }  # Добавляем пользователя в словарь
-        with open(f'user.json', 'w',
-                  encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
-            json.dump(users, file, indent=4,
-                      ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
+
+        with open(f'user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
+            json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print('Регистрация успешна.')
     elif choice == '3':
         print('Выход из программы')
