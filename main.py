@@ -4,13 +4,15 @@ from abc import ABC
 
 # Определение классов Film и User
 class Film:
-    def __init__(self, id_film, title, genre, director, year, rating):
+    def __init__(self, id_film, title, genre, director, year, rating, description, image):
         self.id_film = id_film  # уникальный идентификатор фильма
         self.title = title  # название фильма
         self.genre = genre  # жанр фильма
         self.director = director  # режиссер фильма
         self.year = year  # год выпуска фильма
         self.rating = rating  # список оценок фильма
+        self.description = description
+        self.image = image
 
     def __str__(self):
         return f"Film(ID: {self.id_film}, Title: {self.title}, Genre: {self.genre}, Director: {self.director}, Year: {self.year}, Rating: {self.rating})"  # строковое представление фильма для удобства вывода
@@ -80,9 +82,28 @@ last_id = max([users[user_name]['id_user'] for user_name in users]) if len(users
 
 
 class Strategy_recomendation(ABC):
-    def __init__(self, user):
+    def __init__(self, user,other_users):
         self.user = user
+        self.other_users = other_users
 
+
+class Strategy_similar_users(Strategy_recomendation):
+    def __init__(self, user, other_users):
+        super().__init__(user,other_users)
+    def stategy(self):
+        films= []
+        m = []
+        for not_main_user in self.other_users.keys(): #Перебираю всех остальных пользователей для того чтобы найти на кого пользватель похож больше всего
+            count_genre = 0 #количество совпавших жанров
+            for genre in self.other_users[not_main_user]['user_genre']: # перебираю жанры другого пользователя и если жанры другого пользователя есть в массиве жанров у главного то счётчик увеличивается на 1
+                if genre in user.user_genre:
+                    count_genre+=1
+            count_wached_films = 0 # количество совпавших фильмов
+            for genre in self.other_users[not_main_user]['user_viewed_films']:  # перебираю просмотренные фильмы другого пользователя и если фильмы другого пользователя есть в массиве просмотренных фильмов у главного то счётчик увеличивается на 1
+                if genre in user.user_genre:
+                    count_genre+=1
+            m.append([not_main_user,count_genre+count_wached_films])
+        
 
 
 def login_sign_in():
@@ -100,8 +121,10 @@ def login_sign_in():
             print('Добро пожаловать обратно,', name)
             current_user = users[name]
             print(current_user)
+            return User(users[name]['id_user'], name, users[name]['user_viewed_films'], users[name]['user_genre'])
         else:
             print('Пользователь не найден. Пожалуйста, зарегистрируйтесь.')
+            return 1
     elif choice == '2':
         name = input('Введите имя: ')
         print('Доступные жанры:', ', '.join(list_all_genre))
@@ -120,12 +143,23 @@ def login_sign_in():
         with open(f'user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
             json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print('Регистрация успешна.')
+        return User(last_id + 1, name, [], preferred_genre.split(',')) #Создаю в классе User нового пользователя по данным которыми он ввёл
     elif choice == '3':
         print('Выход из программы')
+        return 0
     else:
         print('Некорректный выбор, попробуйте снова.')
+        return 1
 
+Flag_login = 1
+while Flag_login==1:
+    user = login_sign_in()
+    if user != 1:
+        Flag_login = 0
 
-while True:
-    login_sign_in()
-    print('Добавить фильм в ваши просмотры')
+users_without_main_user = users.copy()
+users_without_main_user.pop(user.user_name)
+print(users_without_main_user)
+a = Strategy_similar_users(user,users_without_main_user)
+print(a.stategy())
+
