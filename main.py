@@ -1,5 +1,7 @@
 import json
-from abc import ABC
+import textwrap
+from abc import ABC, abstractmethod
+from term_image.image import from_url
 
 
 # Определение классов Film и User
@@ -85,26 +87,66 @@ class Strategy_recomendation(ABC):
     def __init__(self, user,other_users):
         self.user = user
         self.other_users = other_users
-
-
+    @abstractmethod
+    def stategy(self):
+        pass
 class Strategy_similar_users(Strategy_recomendation):
     def __init__(self, user, other_users):
         super().__init__(user,other_users)
     def stategy(self):
-        films= []
-        m = []
+        recomendation_films= [] #Финальный список фильмов, которые будут предложены пользователю
+        massive_similar_users = [] # Список людей с кем было совпадение
         for not_main_user in self.other_users.keys(): #Перебираю всех остальных пользователей для того чтобы найти на кого пользватель похож больше всего
+
             count_genre = 0 #количество совпавших жанров
+            matching_genres = []
+            matching_films = []  # в будущем те фильмы которые смотрели оба из пользователей я буду удалять, чтобы пользователю не предлагались те фильмы, которые он смотрел
+
             for genre in self.other_users[not_main_user]['user_genre']: # перебираю жанры другого пользователя и если жанры другого пользователя есть в массиве жанров у главного то счётчик увеличивается на 1
                 if genre in user.user_genre:
                     count_genre+=1
-            count_wached_films = 0 # количество совпавших фильмов
-            for genre in self.other_users[not_main_user]['user_viewed_films']:  # перебираю просмотренные фильмы другого пользователя и если фильмы другого пользователя есть в массиве просмотренных фильмов у главного то счётчик увеличивается на 1
-                if genre in user.user_genre:
-                    count_genre+=1
-            m.append([not_main_user,count_genre+count_wached_films])
-        
+                    matching_genres.append(genre)
 
+            count_wached_films = 0 # количество совпавших фильмов
+            for film in self.other_users[not_main_user]['user_viewed_films']:  # перебираю просмотренные фильмы другого пользователя и если фильмы другого пользователя есть в массиве просмотренных фильмов у главного то счётчик увеличивается на 1
+                if film in user.user_viewed_films:
+                    count_wached_films+=1
+                    matching_films.append(film)
+            massive_similar_users.append([not_main_user,count_genre+count_wached_films,count_genre,count_wached_films,matching_genres,matching_films]) # Добавляю пользователей с кем было совпадение
+        massive_similar_users = sorted(massive_similar_users, key=lambda x: x[1], reverse=True) # Сортирую, чтобы сначала были пользователи с большим количеством совпадений
+        max_count_similar = max([count_similar[1] for count_similar in massive_similar_users]) # Самое большое количество совпадений
+        massive_similar_users = [users for users in massive_similar_users if users[1]==max_count_similar]# Беру только пользователей с большиим количеством совпадений
+        for name in massive_similar_users:
+            recomendation_films+=users_without_main_user[name[0]]['user_viewed_films'] #Беру фильмы пользователей с кем было совпадение
+        return sorted(recomendation_films)
+
+
+
+def search_film():
+    request = input("Введите название фильма").capitalize()
+    if request in films_data.keys():
+        print(films_data[request])
+        print(from_url(films_data[request]['image']))
+        print("Название:", films_data[request]['title'])
+        print("Жанр:", films_data[request]['genre'])
+        print("Режиссёр:", films_data[request]['director'])
+        print("Год выпуска:", films_data[request]['year'])
+        print("Описание:")
+        print(textwrap.fill(films_data[request]['description'], width=70))  # перенос каждые 70 символов (по пробелам)
+        print("Средний рейтинг:", sum(films_data[request]['rating']) / len(films_data[request]['rating']) if films_data[request]['rating'] else "Нет оценок")
+        print("==================================")
+        print("добавить в просмотренные? (да/нет)")
+        choice = input().lower()
+        if choice == 'да':
+            global user
+            users[user.user_name]['user_viewed_films'].append(request)  # Добавляем название фильма в просмотренные пользователем
+            with open(f'user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
+                json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
+            print("Фильм добавлен в просмотренные.")
+        input("Введите что-нибудь, чтобы продолжить...")
+        clear()
+    else:
+        print("Фильм не найден")
 
 def login_sign_in():
     global last_id
@@ -151,6 +193,13 @@ def login_sign_in():
         print('Некорректный выбор, попробуйте снова.')
         return 1
 
+# da = films_data.keys()
+# new_dict = {}
+# for i in da:
+#     new_dict[i] = films_data[i]['genre']
+# print(new_dict)
+
+
 Flag_login = 1
 while Flag_login==1:
     user = login_sign_in()
@@ -159,7 +208,18 @@ while Flag_login==1:
 
 users_without_main_user = users.copy()
 users_without_main_user.pop(user.user_name)
-print(users_without_main_user)
+
+print('------------MAIN MENU------------')
+if len(user.user_viewed_films) == 0:
+    print("Похоже, вы ещё не добавили просмотренные фильмы. Пожалуйста, найдите и добавьте хотя бы один фильм.")
+    input("Нажмите Enter, чтобы продолжить...")
+    while len(user.user_viewed_films) == 0:
+        search_film()
+search_film()
+
+print("1. Рекомендации от похожих пользователей",
+      "5. Добавить просмотренные фильмы",sep='\n')
+
 a = Strategy_similar_users(user,users_without_main_user)
 print(a.stategy())
 
