@@ -95,6 +95,7 @@ class Strategy_similar_users(Strategy_recomendation):
         super().__init__(user,other_users)
     def stategy(self):
         recomendation_films= [] #Финальный список фильмов, которые будут предложены пользователю
+        litle_recomendation_films =[] #Финальный список фильмов, которые будут предложены пользователю от менее похожих пользователей
         massive_similar_users = [] # Список людей с кем было совпадение
         for not_main_user in self.other_users.keys(): #Перебираю всех остальных пользователей для того чтобы найти на кого пользватель похож больше всего
 
@@ -115,10 +116,20 @@ class Strategy_similar_users(Strategy_recomendation):
             massive_similar_users.append([not_main_user,count_genre+count_wached_films,count_genre,count_wached_films,matching_genres,matching_films]) # Добавляю пользователей с кем было совпадение
         massive_similar_users = sorted(massive_similar_users, key=lambda x: x[1], reverse=True) # Сортирую, чтобы сначала были пользователи с большим количеством совпадений
         max_count_similar = max([count_similar[1] for count_similar in massive_similar_users]) # Самое большое количество совпадений
-        massive_similar_users = [users for users in massive_similar_users if users[1]==max_count_similar]# Беру только пользователей с большиим количеством совпадений
-        for name in massive_similar_users:
+        massive_similar_users = [users for users in massive_similar_users if users[1]>0]  # Беру только пользователей с которыми
+        massive_litle_similar_users = [users for users in massive_similar_users if users[1] != max_count_similar and users[1]>0]  # Беру только пользователей с большиим количеством совпадений
+        massive_big_similar_users = [users for users in massive_similar_users if users[1]==max_count_similar]# Беру только пользователей с меньшим количеством совпадений
+        for name in massive_big_similar_users:
             recomendation_films+=users_without_main_user[name[0]]['user_viewed_films'] #Беру фильмы пользователей с кем было совпадение
-        return sorted(recomendation_films)
+            for film in user.user_viewed_films:
+                if film in litle_recomendation_films:
+                    litle_recomendation_films.remove(film)
+        for name in massive_litle_similar_users:
+            litle_recomendation_films += users_without_main_user[name[0]]['user_viewed_films']  # Беру фильмы пользователей с кем было совпадение
+            for film in user.user_viewed_films:
+                if film in litle_recomendation_films:
+                    litle_recomendation_films.remove(film)
+        return [recomendation_films,litle_recomendation_films,massive_similar_users]
 
 
 
@@ -144,7 +155,6 @@ def search_film():
                 json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
             print("Фильм добавлен в просмотренные.")
         input("Введите что-нибудь, чтобы продолжить...")
-        clear()
     else:
         print("Фильм не найден")
 
@@ -168,7 +178,7 @@ def login_sign_in():
             print('Пользователь не найден. Пожалуйста, зарегистрируйтесь.')
             return 1
     elif choice == '2':
-        name = input('Введите имя: ')
+        name = input('Введите Username: ')
         print('Доступные жанры:', ', '.join(list_all_genre))
         preferred_genre = input('Введите предпочитаемые жанры: ').replace(' ','').lower()  # Убираем пробелы и приводим к нижнему регистру
 
@@ -193,11 +203,6 @@ def login_sign_in():
         print('Некорректный выбор, попробуйте снова.')
         return 1
 
-# da = films_data.keys()
-# new_dict = {}
-# for i in da:
-#     new_dict[i] = films_data[i]['genre']
-# print(new_dict)
 
 
 Flag_login = 1
@@ -215,11 +220,19 @@ if len(user.user_viewed_films) == 0:
     input("Нажмите Enter, чтобы продолжить...")
     while len(user.user_viewed_films) == 0:
         search_film()
-search_film()
 
 print("1. Рекомендации от похожих пользователей",
       "5. Добавить просмотренные фильмы",sep='\n')
 
-a = Strategy_similar_users(user,users_without_main_user)
-print(a.stategy())
-
+choice_main_menu = input("Выберите действие: ")
+if choice_main_menu == '5':
+    search_film()
+elif choice_main_menu  == '1':
+    main_strategy = Strategy_similar_users(user,users_without_main_user)
+    print(main_strategy.stategy()[0])
+    print("Может быть вам интересны ещё фильмы пользователей с кем у вас было меньше совпадений?")
+    user_choice = input("Введите да/нет: ").lower()
+    if user_choice == 'да':
+        print(main_strategy.stategy()[1])
+    print("Пользователи с кем у вас были совпадения:")
+    print([name[0] for name in main_strategy.stategy()[2]])
