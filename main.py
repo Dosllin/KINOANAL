@@ -116,47 +116,78 @@ class Strategy_similar_users(Strategy_recomendation):
             massive_similar_users.append([not_main_user,count_genre+count_wached_films,count_genre,count_wached_films,matching_genres,matching_films]) # Добавляю пользователей с кем было совпадение
         massive_similar_users = sorted(massive_similar_users, key=lambda x: x[1], reverse=True) # Сортирую, чтобы сначала были пользователи с большим количеством совпадений
         max_count_similar = max([count_similar[1] for count_similar in massive_similar_users]) # Самое большое количество совпадений
+
         massive_similar_users = [users for users in massive_similar_users if users[1]>0]  # Беру только пользователей с которыми
         massive_litle_similar_users = [users for users in massive_similar_users if users[1] != max_count_similar and users[1]>0]  # Беру только пользователей с большиим количеством совпадений
-        massive_big_similar_users = [users for users in massive_similar_users if users[1]==max_count_similar]# Беру только пользователей с меньшим количеством совпадений
-        for name in massive_big_similar_users:
-            recomendation_films+=users_without_main_user[name[0]]['user_viewed_films'] #Беру фильмы пользователей с кем было совпадение
-            for film in user.user_viewed_films:
-                if film in litle_recomendation_films:
-                    litle_recomendation_films.remove(film)
-        for name in massive_litle_similar_users:
+        massive_big_similar_users = [users for users in massive_similar_users if users[1] == max_count_similar]  # Беру только пользователей с меньшим количеством совпадений
+
+        # Тут я столкнулся с проблемой, что если максимальное и фильмы один в один, то возвращает пустой список
+        # Я исправил это так
+
+        while len(recomendation_films)<1: # пока у нас не будет хотя бы 1 фильм, который можно порекомендовать
+            for name in massive_big_similar_users:
+                recomendation_films+=users_without_main_user[name[0]]['user_viewed_films'] #Беру фильмы пользователей с кем было совпадение
+                for film in user.user_viewed_films: # Удаляю повторы фильмов
+                    if film in recomendation_films:
+                        recomendation_films.remove(film)
+            else:
+                if len(massive_litle_similar_users) == 0: # Если в массиве пользователей нет ни одного совпавшего пользователя, то людей с кем сравнить человека нет
+                    print("К сожелению таких пользователей нет, вы уникален, попробуйте использовать другую стратегию")
+                    return [[],[],[]]
+
+                recomendation_films += users_without_main_user[massive_litle_similar_users[0][0]]['user_viewed_films']  # Беру фильмы пользователей с кем было совпадение
+                massive_litle_similar_users = massive_litle_similar_users[1:] # Убираю человека, который стал пользователем с самым большим количеством совпадений, из списка пользователей с маленьким совпадением
+
+                for film in user.user_viewed_films: # удаляю повторы
+                    if film in recomendation_films:
+                        recomendation_films.remove(film)
+
+        for name in massive_litle_similar_users: # Формирую массив фильмов с маленьким количеством совпадений
             litle_recomendation_films += users_without_main_user[name[0]]['user_viewed_films']  # Беру фильмы пользователей с кем было совпадение
-            for film in user.user_viewed_films:
+            for film in user.user_viewed_films: # удаляю повторы
                 if film in litle_recomendation_films:
                     litle_recomendation_films.remove(film)
         return [recomendation_films,litle_recomendation_films,massive_similar_users]
 
+def film_preview(request): # Функция для отображения фильма. Сюда подаётся название фильма
+    global films_data
+    print(films_data[request])
+    print('=========================================')
+    try:
+        print(from_url(films_data[request]['image']))
+    except request.exceptions.ConnectionError:  # Ошибка, когда не может получить изоброжение по ссылке
+        print('Не смогли найти картинку 😥')
+    print("Название:", films_data[request]['title'])
+    print("Жанр:", films_data[request]['genre'])
+    print("Режиссёр:", films_data[request]['director'])
+    print("Год выпуска:", films_data[request]['year'])
+    print("Описание:")
+    print(textwrap.fill(films_data[request]['description'], width=70))  # перенос каждые 70 символов (по пробелам)
+    print("Средний рейтинг:",sum(films_data[request]['rating']) / len(films_data[request]['rating']) if films_data[request]['rating'] else "Нет оценок")
+    print('=========================================')
+
+def add_in_viewed_films(request): #Добавить фильм в просмотренные и обновить это в базе данных
+    global user
+    users[user.user_name]['user_viewed_films'].append(request)  # Добавляем название фильма в просмотренные пользователем
+    with open(f'user.json', 'w',encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
+        json.dump(users, file, indent=4,ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
+    print("Фильм добавлен в просмотренные.")
+
 
 
 def search_film():
-    request = input("Введите название фильма").capitalize()
+    request = input("Введите название фильма: ").capitalize()
     if request in films_data.keys():
-        print(films_data[request])
-        print(from_url(films_data[request]['image']))
-        print("Название:", films_data[request]['title'])
-        print("Жанр:", films_data[request]['genre'])
-        print("Режиссёр:", films_data[request]['director'])
-        print("Год выпуска:", films_data[request]['year'])
-        print("Описание:")
-        print(textwrap.fill(films_data[request]['description'], width=70))  # перенос каждые 70 символов (по пробелам)
-        print("Средний рейтинг:", sum(films_data[request]['rating']) / len(films_data[request]['rating']) if films_data[request]['rating'] else "Нет оценок")
-        print("==================================")
-        print("добавить в просмотренные? (да/нет)")
+        film_preview(request)
         choice = input().lower()
         if choice == 'да':
-            global user
-            users[user.user_name]['user_viewed_films'].append(request)  # Добавляем название фильма в просмотренные пользователем
-            with open(f'user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
-                json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
-            print("Фильм добавлен в просмотренные.")
+            add_in_viewed_films(request)
         input("Введите что-нибудь, чтобы продолжить...")
+        return 0
     else:
         print("Фильм не найден")
+
+
 
 def login_sign_in():
     global last_id
@@ -204,7 +235,6 @@ def login_sign_in():
         return 1
 
 
-
 Flag_login = 1
 while Flag_login==1:
     user = login_sign_in()
@@ -214,25 +244,55 @@ while Flag_login==1:
 users_without_main_user = users.copy()
 users_without_main_user.pop(user.user_name)
 
-print('------------MAIN MENU------------')
+
+
+
 if len(user.user_viewed_films) == 0:
+    print("==================================")
     print("Похоже, вы ещё не добавили просмотренные фильмы. Пожалуйста, найдите и добавьте хотя бы один фильм.")
     input("Нажмите Enter, чтобы продолжить...")
     while len(user.user_viewed_films) == 0:
         search_film()
+while True:
+    print('------------MAIN MENU------------')
+    print("1. Рекомендации от похожих пользователей",
+          "5. Добавить просмотренные фильмы"
+          "6. Случайные фильмы (Вам будут предложены случайные фильмы и если вы их смотрели то их можно добавить в список просмотренного)",
+          "7. Выйти",sep='\n')
 
-print("1. Рекомендации от похожих пользователей",
-      "5. Добавить просмотренные фильмы",sep='\n')
+    choice_main_menu = input("Выберите действие: ")
+    if choice_main_menu == '5':
+        search_film()
+    elif choice_main_menu  == '1':
+        print('----------------------------')
+        print('Алгоритм на основе пользователей')
+        print('----------------------------')
+        main_strategy = Strategy_similar_users(user,users_without_main_user)
+        films_list, films_list_litle_similar = main_strategy.stategy()[0],main_strategy.stategy()[1]
 
-choice_main_menu = input("Выберите действие: ")
-if choice_main_menu == '5':
-    search_film()
-elif choice_main_menu  == '1':
-    main_strategy = Strategy_similar_users(user,users_without_main_user)
-    print(main_strategy.stategy()[0])
-    print("Может быть вам интересны ещё фильмы пользователей с кем у вас было меньше совпадений?")
-    user_choice = input("Введите да/нет: ").lower()
-    if user_choice == 'да':
-        print(main_strategy.stategy()[1])
-    print("Пользователи с кем у вас были совпадения:")
-    print([name[0] for name in main_strategy.stategy()[2]])
+        for film in films_list: # перебираю фильмы из списка и показываю их превью
+            film_preview(film) # показываю превью фильма
+            print("Если вы уже смотрели этот фильм, можете добавить его в список просмотренных")
+            user_choice = input("Добавить ? да/нет: ").lower()
+            if user_choice == "да":
+                add_in_viewed_films(film) # Записываем в бвзу данных, что пользователь уже смотрел этот фильм
+
+
+        if len(films_list_litle_similar) > 0: # Если у пользователя ещё были фильмы с другими менее похожими людьми, то мы предлогаем показать такие фильмы
+            print("Может быть вам интересны ещё фильмы пользователей с кем у вас было меньше совпадений?")
+            user_choice = input("Введите да/нет: ").lower()
+            if user_choice == 'да':
+                for film in films_list_litle_similar:
+                    film_preview(film)# показываю превью фильма
+                    print("Если вы уже смотрели этот фильм, можете добавить его в список просмотренных")
+                    user_choice = input("Добавить ? да/нет: ").lower()
+                    if user_choice == "да":
+                        add_in_viewed_films(film) # Записываем в бвзу данных, что пользователь уже смотрел этот фильм
+            # print("Пользователи с кем у вас были совпадения:")
+            # print([name[0] for name in main_strategy.stategy()[2]])
+    elif choice_main_menu == '6':
+        pass
+
+    elif choice_main_menu == '7':
+        print("Досвидание")
+        break
