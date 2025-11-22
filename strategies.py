@@ -1,7 +1,19 @@
 from parsers import Parsers
+from abc import ABC, abstractmethod
 
 users = Parsers.user_parser()
 films_data = Parsers.films_parser()
+
+
+class Strategy_recomendation(ABC):
+    def __init__(self, user,other_users):
+        self.user = user
+        self.other_users = other_users
+    @abstractmethod
+    def stategy(self):
+        pass
+
+
 
 """
 распаковка джейсона в список тапмлов типа (фильм, рейтинг)
@@ -75,7 +87,7 @@ class DirectorStrategy:
         film_directors_dict = self._director_parser()
         dict_films = self._film_parser()
         sorted_directors_counter = self._transformation_of_data()
-
+        print(sorted_directors_counter)
         if sorted_directors_counter[1] != []:
             fav_list = []
             maximal_value = max(sorted_directors_counter[1], key=lambda x: x[1])[1]
@@ -104,3 +116,62 @@ class DirectorStrategy:
         return list_recommend
 
 
+
+class Strategy_similar_users(Strategy_recomendation):
+    def __init__(self, user, other_users):
+        super().__init__(user,other_users)
+    def stategy(self):
+        recomendation_films= [] #Финальный список фильмов, которые будут предложены пользователю
+        litle_recomendation_films =[] #Финальный список фильмов, которые будут предложены пользователю от менее похожих пользователей
+        massive_similar_users = [] # Список людей с кем было совпадение
+        for not_main_user in self.other_users.keys(): #Перебираю всех остальных пользователей для того чтобы найти на кого пользватель похож больше всего
+
+            count_genre = 0 #количество совпавших жанров
+            matching_genres = []
+            matching_films = []  # в будущем те фильмы которые смотрели оба из пользователей я буду удалять, чтобы пользователю не предлагались те фильмы, которые он смотрел
+
+            for genre in self.other_users[not_main_user]['user_genre']: # перебираю жанры другого пользователя и если жанры другого пользователя есть в массиве жанров у главного то счётчик увеличивается на 1
+                if genre in self.user.user_genre:
+                    count_genre+=1
+                    matching_genres.append(genre)
+
+            count_wached_films = 0 # количество совпавших фильмов
+            for film in self.other_users[not_main_user]['user_viewed_films']:  # перебираю просмотренные фильмы другого пользователя и если фильмы другого пользователя есть в массиве просмотренных фильмов у главного то счётчик увеличивается на 1
+                if film in self.user.user_viewed_films:
+                    count_wached_films+=1
+                    matching_films.append(film)
+            massive_similar_users.append([not_main_user,count_genre+count_wached_films,count_genre,count_wached_films,matching_genres,matching_films]) # Добавляю пользователей с кем было совпадение
+        massive_similar_users = sorted(massive_similar_users, key=lambda x: x[1], reverse=True) # Сортирую, чтобы сначала были пользователи с большим количеством совпадений
+        max_count_similar = max([count_similar[1] for count_similar in massive_similar_users]) # Самое большое количество совпадений
+
+        massive_similar_users = [users for users in massive_similar_users if users[1]>0]  # Беру только пользователей с которыми
+        massive_litle_similar_users = [users for users in massive_similar_users if users[1] != max_count_similar and users[1]>0]  # Беру только пользователей с большиим количеством совпадений
+        massive_big_similar_users = [users for users in massive_similar_users if users[1] == max_count_similar]  # Беру только пользователей с меньшим количеством совпадений
+
+        # Тут я столкнулся с проблемой, что если максимальное и фильмы один в один, то возвращает пустой список
+        # Я исправил это так
+
+        while len(recomendation_films)<1: # пока у нас не будет хотя бы 1 фильм, который можно порекомендовать
+            for name in massive_big_similar_users:
+                recomendation_films+=self.other_users[name[0]]['user_viewed_films'] #Беру фильмы пользователей с кем было совпадение
+                for film in self.user.user_viewed_films: # Удаляю повторы фильмов
+                    if film in recomendation_films:
+                        recomendation_films.remove(film)
+            else:
+                if len(massive_litle_similar_users) == 0: # Если в массиве пользователей нет ни одного совпавшего пользователя, то людей с кем сравнить человека нет
+                    print("К сожелению таких пользователей нет, вы уникален, попробуйте использовать другую стратегию")
+                    return [[],[],[]]
+
+                recomendation_films += self.other_users[massive_litle_similar_users[0][0]]['user_viewed_films']  # Беру фильмы пользователей с кем было совпадение
+                massive_litle_similar_users = massive_litle_similar_users[1:] # Убираю человека, который стал пользователем с самым большим количеством совпадений, из списка пользователей с маленьким совпадением
+
+                for film in self.user.user_viewed_films: # удаляю повторы
+                    if film in recomendation_films:
+                        recomendation_films.remove(film)
+
+        for name in massive_litle_similar_users: # Формирую массив фильмов с маленьким количеством совпадений
+            litle_recomendation_films += self.other_users[name[0]]['user_viewed_films']  # Беру фильмы пользователей с кем было совпадение
+            for film in self.user.user_viewed_films: # удаляю повторы
+                if film in litle_recomendation_films:
+                    litle_recomendation_films.remove(film)
+        return [recomendation_films,litle_recomendation_films,massive_similar_users]
