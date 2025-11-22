@@ -2,7 +2,16 @@
     "Никита": {
         "id_user": 1,
         "name": "Никита",
-        "user_viewed_films": [],
+        "user_viewed_films": [
+            "Человек-паук: Через вселенные",
+            "Человек-паук",
+            "Человек-паук: Вдали от дома",
+            "Брат",
+            "Жмурки",
+            "1+1",
+            "Голая правда",
+            "Бойцовский клуб"
+        ],
         "user_genre": [
             "comedy",
             "fantasy",
@@ -12,7 +21,10 @@
     "Илья": {
         "id_user": 2,
         "name": "Илья",
-        "user_viewed_films": [],
+        "user_viewed_films": [
+            "Человек-паук",
+            "100 вещей и ничего лишнего"
+        ],
         "user_genre": [
             "horror",
             "thriller",
@@ -22,11 +34,151 @@
     "Карим": {
         "id_user": 3,
         "name": "Карим",
-        "user_viewed_films": [],
+        "user_viewed_films": [
+            "1+1"
+        ],
         "user_genre": [
             "animation",
             "musical",
             "western"
+        ]
+    },
+    "Амир": {
+        "id_user": 4,
+        "name": "Амир",
+        "user_viewed_films": [
+            "Извне",
+            "Ольга",
+            "Атака титанов",
+            "Сноуден",
+            "Копы 667",
+            "Черный двор"
+        ],
+        "user_genre": [
+            "historical",
+            "war"
+        ]
+    },
+    "Лёха": {
+        "id_user": 5,
+        "name": "Лёха",
+        "user_viewed_films": [],
+        "user_genre": [
+            "crime"
+        ]
+    },
+    "Андрей": {
+        "id_user": 6,
+        "name": "Андрей",
+        "user_viewed_films": [],
+        "user_genre": [
+            "mystery",
+            "thriller"
+        ]
+    },
+    "Александр": {
+        "id_user": 7,
+        "name": "Александр",
+        "user_viewed_films": [],
+        "user_genre": [
+            "animation",
+            "comedy"
+        ]
+    },
+    "Гоша": {
+        "id_user": 8,
+        "name": "Гоша",
+        "user_viewed_films": [],
+        "user_genre": [
+            "family"
+        ]
+    },
+    "Киррил": {
+        "id_user": 9,
+        "name": "Киррил",
+        "user_viewed_films": [],
+        "user_genre": [
+            "filmnoir"
+        ]
+    },
+    "Олег": {
+        "id_user": 10,
+        "name": "Олег",
+        "user_viewed_films": [],
+        "user_genre": [
+            "comedy",
+            "fantasy",
+            "superhero"
+        ]
+    },
+    "Оаг": {
+        "id_user": 10,
+        "name": "Оаг",
+        "user_viewed_films": [
+            "Человек-паук: Через вселенные",
+            "Человек-паук",
+            "Человек-паук: Вдали от дома",
+            "Брат",
+            "Жмурки",
+            "1+1"
+        ],
+        "user_genre": [
+            "comedy",
+            "fantasy",
+            "superhero"
+        ]
+    },
+    "Оasdаг": {
+        "id_user": 11,
+        "name": "Оаг",
+        "user_viewed_films": [
+            "Человек-паук: Через вселенные",
+            "Человек-паук",
+            "Человек-паук: Вдали от дома",
+            "Брат",
+            "1+1"
+        ],
+        "user_genre": [
+            "comedy",
+            "fantasy"
+        ]
+    },
+    "sadasd": {
+        "id_user": 111,
+        "name": "asdasdds",
+        "user_viewed_films": [
+            "Человек-паук: Через вселенные",
+            "Человек-паук",
+            "Человек-паук: Вдали от дома",
+            "Брат",
+            "1+1",
+            "Ворошиловский стрелок"
+        ],
+        "user_genre": [
+            "comedy",
+            "fantasy"
+        ]
+    },
+    "Катя": {
+        "id_user": 112,
+        "name": "Катя",
+        "user_viewed_films": [
+            "Астрал"
+        ],
+        "user_genre": [
+            "satire"
+        ]
+    },
+    "Лана": {
+        "id_user": 113,
+        "name": "Лана",
+        "user_viewed_films": [
+            "Очень странные дела",
+            "Американская история ужасов"
+        ],
+        "user_genre": [
+            "fantasy",
+            "horror"
         ]
     }
 }
