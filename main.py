@@ -1,7 +1,13 @@
+from strategies import *
 import json
 import textwrap
 from abc import ABC, abstractmethod
 from term_image.image import from_url
+from parsers import Parsers
+
+
+users = Parsers.user_parser()
+films_data = Parsers.films_parser()
 
 
 # Определение классов Film и User
@@ -50,18 +56,8 @@ class FilmManager:
         film.rating.append(review)  # Добавление оценки к фильму
 
 
-# Словарь для хранения пользователей
-with open('user.json', 'r', encoding="UTF-8") as file:  # Открываем файл с пользователями для чтения
-    try:
-        users = json.load(file)  # Загружаем пользователей из файла в словарь
-    except json.decoder.JSONDecodeError or FileNotFoundError:
-        users = {}
-# Словарь для хранения фильмов
-with open('films.json', 'r', encoding="UTF-8") as file:  # Открываем файл с фильмами для чтения
-    try:
-        films_data = json.load(file)  # Загружаем фильмы из файла в словарь
-    except json.decoder.JSONDecodeError or FileNotFoundError:
-        films_data = {}
+DirectorStrategy1 = DirectorStrategy("Илья")
+print(DirectorStrategy1.strategy())
 
 # #### Тестовые данные ####
 # film1 = Film(1, "Inception", "science fiction", "Christopher Nolan", 2010, [9, 10, 8])
@@ -290,6 +286,20 @@ while True:
                         add_in_viewed_films(film) # Записываем в бвзу данных, что пользователь уже смотрел этот фильм
             # print("Пользователи с кем у вас были совпадения:")
             # print([name[0] for name in main_strategy.stategy()[2]])
+
+
+    elif choice_main_menu == '2':
+        print('----------------------------')
+        print('Алгоритм на основе ваших любимых режиссеров')
+        print('----------------------------')
+        print()
+        User_dir_strategy = DirectorStrategy(user)
+        print(User_dir_strategy.strategy())
+
+
+
+
+
     elif choice_main_menu == '6':
         pass
 
