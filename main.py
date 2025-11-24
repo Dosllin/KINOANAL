@@ -2,59 +2,13 @@ from strategies import *
 import json
 import textwrap
 from term_image.image import from_url
+from strategies import *
+from manager import *
 from parsers import Parsers
 
 
 users = Parsers.user_parser()
 films_data = Parsers.films_parser()
-
-
-# Определение классов Film и User
-class Film:
-    def __init__(self, id_film, title, genre, director, year, rating, description, image):
-        self.id_film = id_film  # уникальный идентификатор фильма
-        self.title = title  # название фильма
-        self.genre = genre  # жанр фильма
-        self.director = director  # режиссер фильма
-        self.year = year  # год выпуска фильма
-        self.rating = rating  # список оценок фильма
-        self.description = description
-        self.image = image
-
-    def __str__(self):
-        return f"Film(ID: {self.id_film}, Title: {self.title}, Genre: {self.genre}, Director: {self.director}, Year: {self.year}, Rating: {self.rating})"  # строковое представление фильма для удобства вывода
-
-
-class User:
-    def __init__(self, id_user, user_name, user_viewed_films, user_genre):
-        self.id_user = id_user  # уникальный идентификатор пользователя
-        self.user_name = user_name  # имя пользователя
-        self.user_viewed_films = user_viewed_films  # список просмотренных пользователем фильмов
-        self.user_genre = user_genre  # список предпочитаемых жанров пользователя
-
-    def __str__(self):
-        return f"User(ID: {self.id_user}, Name: {self.user_name}, Viewed Films: {[film.title for film in self.user_viewed_films]}, Preferred Genre: {self.user_genre})"  # строковое представление пользователя для удобства вывода
-
-
-# Список всех жанров фильмов
-list_all_genre = ["action", "adventure", "animation", "biography", "comedy", "crime", "documentary", "drama", "fantasy",
-                  "historical", "horror", "musical", "mystery", "romance", "science fiction", "thriller",
-                  "war", "western", "family", "film noir", "coming-of-age", "superhero", "psychological", "satire"]
-
-
-# Менеджер для работы с фильмами и пользователями
-class FilmManager:
-    def __init__(self, user):
-        self.user = user
-
-    def add_film(self, film):
-        self.user.user_viewed_films.append(film)  # Добавление фильма в просмотренные пользователем
-
-    @staticmethod
-    def add_user_review(film, review):
-        film.rating.append(review)  # Добавление оценки к фильму
-
-
 
 
 # #### Тестовые данные ####
@@ -77,8 +31,6 @@ last_id = max([users[user_name]['id_user'] for user_name in users]) if len(users
 # В максе ищу самый большой id, чтобы по нему создавать новые, если данных в датабазе нет, то значение равно 0
 
 
-
-
 def film_preview(request): # Функция для отображения фильма. Сюда подаётся название фильма
     global films_data
     print(films_data[request])
@@ -96,13 +48,13 @@ def film_preview(request): # Функция для отображения фил
     print("Средний рейтинг:",sum(films_data[request]['rating']) / len(films_data[request]['rating']) if films_data[request]['rating'] else "Нет оценок")
     print('=========================================')
 
+
 def add_in_viewed_films(request): #Добавить фильм в просмотренные и обновить это в базе данных
     global user
     users[user.user_name]['user_viewed_films'].append(request)  # Добавляем название фильма в просмотренные пользователем
     with open(f'user.json', 'w',encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
         json.dump(users, file, indent=4,ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
     print("Фильм добавлен в просмотренные.")
-
 
 
 def search_film():
@@ -116,7 +68,6 @@ def search_film():
         return 0
     else:
         print("Фильм не найден")
-
 
 
 def login_sign_in():
@@ -171,10 +122,9 @@ while Flag_login==1:
     if user != 1:
         Flag_login = 0
 
+
 users_without_main_user = users.copy()
 users_without_main_user.pop(user.user_name)
-
-
 
 
 if len(user.user_viewed_films) == 0:
@@ -199,8 +149,8 @@ while True:
         print('----------------------------')
         print('Алгоритм на основе пользователей')
         print('----------------------------')
-        main_strategy = Strategy_similar_users(user,users_without_main_user)
-        films_list, films_list_litle_similar = main_strategy.stategy()[0],main_strategy.stategy()[1]
+        main_strategy = StrategySimilarUsers(user,users_without_main_user)
+        films_list, films_list_litle_similar = main_strategy.strategy()[0],main_strategy.strategy()[1]
 
         for film in films_list: # перебираю фильмы из списка и показываю их превью
             film_preview(film) # показываю превью фильма
@@ -229,12 +179,8 @@ while True:
         print('Алгоритм на основе ваших любимых режиссеров')
         print('----------------------------')
         print()
-        User_dir_strategy = DirectorStrategy(user)
+        User_dir_strategy = DirectorStrategy(user.user_name)
         print(User_dir_strategy.strategy())
-
-
-
-
 
     elif choice_main_menu == '6':
         pass
