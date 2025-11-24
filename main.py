@@ -1,3 +1,4 @@
+from strategies import *
 import json
 import textwrap
 from term_image.image import from_url
