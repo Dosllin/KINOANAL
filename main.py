@@ -53,13 +53,13 @@ def film_preview(request): # Функция для отображения фил
 
 def add_in_viewed_films(request): #Добавить фильм в просмотренные и обновить это в базе данных
     users[user.user_name]['user_viewed_films'].append(request)  # Добавляем название фильма в просмотренные пользователем
-    with open(f'user.json', 'w',encoding="UTF-8") as file:  # Открываем файл для записи и я обязательно переписывю его целиком
+    with open(f'Database/user.json', 'w', encoding="UTF-8") as file:  # Открываем файл для записи и я обязательно переписывю его целиком
         json.dump(users, file, indent=5,ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
     print("Фильм добавлен в просмотренные")
 
 def add_in_wish_list(request): #Добавить фильм в отложенные и обновить это в базе данных
     users[user.user_name]['wish_list'].append(request)  # Добавляем название фильма в отложенные пользователя
-    with open(f'user.json', 'w',encoding="UTF-8") as file:  # Открываем файл для записи и я обязательно переписывю его целиком
+    with open(f'Database/user.json', 'w', encoding="UTF-8") as file:  # Открываем файл для записи и я обязательно переписывю его целиком
         json.dump(users, file, indent=5,ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
     print("Фильм добавлен в отложенные")
 
@@ -135,7 +135,7 @@ def login_sign_in():
             'wish_list': new_user.user_wish_list
         }  # Добавляем пользователя в словарь
 
-        with open(f'user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
+        with open(f'Database/user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
             json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print('Регистрация успешна.')
         return User(last_id + 1, name, [], preferred_genre.split(','), []) #Создаю в классе User нового пользователя по данным которыми он ввёл
