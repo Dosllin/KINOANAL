@@ -3,7 +3,7 @@ import json
 class Parsers:
     @staticmethod
     def user_parser():
-        with open('user.json', 'r', encoding="UTF-8") as file:  # Открываем файл с пользователями для чтения
+        with open('Database/user.json', 'r', encoding="UTF-8") as file:  # Открываем файл с пользователями для чтения
             try:
                 users = json.load(file)  # Загружаем пользователей из файла в словарь
                 return users
@@ -12,7 +12,7 @@ class Parsers:
                 return users
     @staticmethod
     def films_parser():
-        with open('films.json', 'r', encoding="UTF-8") as file:  # Открываем файл с фильмами для чтения
+        with open('Database/films.json', 'r', encoding="UTF-8") as file:  # Открываем файл с фильмами для чтения
             try:
                 films_data = json.load(file)  # Загружаем фильмы из файла в словарь
                 return films_data
