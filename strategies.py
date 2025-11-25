@@ -162,6 +162,14 @@ class StrategySimilarUsers(StrategyRecommendation):
         # Тут я столкнулся с проблемой, что если максимальное и фильмы один в один, то возвращает пустой список
         # Я исправил это так
 
+        if len(recommendation_films)>1:
+            for film in self.user.user_viewed_films:  # Удаляю повторы фильмов
+                if film in recommendation_films:
+                    recommendation_films.remove(film)
+            for film in self.user.user_viewed_films:  # удаляю повторы
+                if film in little_recommendation_films:
+                    little_recommendation_films.remove(film)
+
         while len(recommendation_films)<1: # пока у нас не будет хотя бы 1 фильм, который можно порекомендовать
             for name in massive_big_similar_users:
                 recommendation_films += [film for film in self.other_users[name[0]]['user_viewed_films'] if
@@ -201,8 +209,11 @@ class StrategySimilarUsers(StrategyRecommendation):
                 while film in little_recommendation_films:
                     little_recommendation_films.remove(film)
                     print(film)
+            for film in self.user.user_viewed_films:  # Удаляю повторы фильмов
+                if film in recommendation_films:
+                    recommendation_films.remove(film)
 
 
 
 
-        return [recommendation_films,little_recommendation_films,massive_similar_users]
+        return [list(set(recommendation_films)),list(set(little_recommendation_films)),massive_similar_users]
