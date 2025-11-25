@@ -1,0 +1,2 @@
+# Требуемая версия Python: >=3.8
+term-image>=0.6,<1.0; python_version >= "3.8"
