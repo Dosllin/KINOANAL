@@ -172,24 +172,41 @@ def similar_algoritm():
             films_list, films_list_litle_similar = main_strategy.strategy(filter_years, filter_rating)[0], \
             main_strategy.strategy(filter_years, filter_rating)[1]
 
-            for film in films_list:  # перебираю фильмы из списка и показываю их превью
-                film_preview(film)  # показываю превью фильма
-                print("Если вы уже смотрели этот фильм, можете добавить его в список просмотренных")
-                user_choice = input("Добавить ? да/нет: ").lower()
-                if user_choice == "да":
-                    add_in_viewed_films(film)  # Записываем в бвзу данных, что пользователь уже смотрел этот фильм
+            for film in films_list_litle_similar:
+                film_preview(film)
+                print("1. Следующий фильм"
+                      "2. Добавить фильм в просмотренные",
+                      "3. Добавить фильм в отложенные",
+                      "4. Выйти из случайной подборки", sep='\n')
+                choice = input("Введите команду: ")
+                if choice == "1":
+                    continue
+                elif choice == '2':
+                    add_in_viewed_films(film)  # Добавляем в просмотренные
+                elif choice == '3':
+                    add_in_wish_list(film)  # Добавляем в отложенные
+                elif choice == '4':
+                    break
 
             if len(films_list_litle_similar) > 0:  # Если у пользователя ещё были фильмы с другими менее похожими людьми, то мы предлогаем показать такие фильмы
                 print("Может быть вам интересны ещё фильмы пользователей с кем у вас было меньше совпадений?")
                 user_choice = input("Введите да/нет: ").lower()
                 if user_choice == 'да':
                     for film in films_list_litle_similar:
-                        film_preview(film)  # показываю превью фильма
-                        print("Если вы уже смотрели этот фильм, можете добавить его в список просмотренных")
-                        user_choice = input("Добавить ? да/нет: ").lower()
-                        if user_choice == "да":
-                            add_in_viewed_films(
-                                film)  # Записываем в бвзу данных, что пользователь уже смотрел этот фильм
+                        film_preview(film)
+                        print("1. Следующий фильм"
+                              "2. Добавить фильм в просмотренные",
+                              "3. Добавить фильм в отложенные",
+                              "4. Выйти из случайной подборки", sep='\n')
+                        choice = input("Введите команду: ")
+                        if choice == "1":
+                            continue
+                        elif choice == '2':
+                            add_in_viewed_films(film) # Добавляем в просмотренные
+                        elif choice == '3':
+                            add_in_wish_list(film)# Добавляем в отложенные
+                        elif choice == '4':
+                            break
                 # print("Пользователи с кем у вас были совпадения:")
                 # print([name[0] for name in main_strategy.stategy()[2]])
 
@@ -213,7 +230,7 @@ def similar_algoritm():
                     filter_rating = int(input("Введите минимальный рейтинг: "))
                     print('----------------------')
                 elif user_choice == 3:
-                    return 0
+                    break
                 else:
                     print("Некоректный ввод")
         elif user_choice == 3:
