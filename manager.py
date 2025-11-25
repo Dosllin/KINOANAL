@@ -21,14 +21,15 @@ class Film:
 
 
 class User:
-    def __init__(self, id_user, user_name, user_viewed_films, user_genre):
+    def __init__(self, id_user, user_name, user_viewed_films, user_genre, user_wish_list):
         self.id_user = id_user  # уникальный идентификатор пользователя
         self.user_name = user_name  # имя пользователя
         self.user_viewed_films = user_viewed_films  # список просмотренных пользователем фильмов
         self.user_genre = user_genre  # список предпочитаемых жанров пользователя
+        self.user_wish_list = user_wish_list # Список отложенных фильмов
 
     def __str__(self):
-        return f"User(ID: {self.id_user}, Name: {self.user_name}, Viewed Films: {[film.title for film in self.user_viewed_films]}, Preferred Genre: {self.user_genre})"  # строковое представление пользователя для удобства вывода
+        return f"User(ID: {self.id_user}, Name: {self.user_name}, Viewed Films: {[film.title for film in self.user_viewed_films]}, Preferred Genre: {self.user_genre}, Wish List: {self.user_wish_list})"  # строковое представление пользователя для удобства вывода
 
 
 # Менеджер для работы с фильмами и пользователями
@@ -36,8 +37,11 @@ class FilmManager:
     def __init__(self, user):
         self.user = user
 
-    def add_film(self, film):
+    def add_film_in_viewed(self, film):
         self.user.user_viewed_films.append(film)  # Добавление фильма в просмотренные пользователем
+
+    def add_film_in_wish_list(self, film):
+        self.user.user_wish_list.append(film)
 
     @staticmethod
     def add_user_review(film, review):
