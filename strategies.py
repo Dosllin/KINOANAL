@@ -11,25 +11,30 @@ class StrategyRecommendation(ABC):
     def strategy(self):
         pass
 
+
 """
-распаковка джейсона в список тапмлов типа (фильм, рейтинг)
+распаковка джейсона в список тапмлов формата (фильм, рейтинг)
 и отсортировать по рейтингу через лямбда
 """
-
 class RatingStrategy:
+    # основной метод
     @staticmethod
     def strategy():
+        # создаём список формата (фильм, средний рейтинг)
         films_ratings = []
         for film_name, film_data in films_data.items():
             average_rating = sum(film_data["rating"]) / len(film_data["rating"])
             films_ratings.append((film_name, average_rating))
+        # сортируем список по параметру: "средний рейтинг" по его убыванию
         sorted_list = sorted(films_ratings, key=lambda x: x[1], reverse=True)[:10]
+        # возвращаем список фильмов формата [фильм1, фильм2 ...]
         return list(map(lambda x: x[0], sorted_list))
+
+    # метод сортировки по минимальному и максимальному году
     @staticmethod
     def filtered_year(min_year=0, max_year=9999):
         sorted_list = RatingStrategy.strategy()
         return list(filter(lambda x: min_year <= films_data[x]['year'] <= max_year, sorted_list))
-
 
 
 """
@@ -38,15 +43,16 @@ class RatingStrategy:
     режиссер1: количество фильмов от него
     режиссер2: количество фильмов от него
 }
-для этого нужен тапл типа: ((пользователь, [режиссеры])) или словарь такого типа
+для этого нужен тапл формата: ((пользователь, [режиссеры])) или словарь такого формата
 отсортировать их по количеству не трогая пользователя
 на основе максимального количества просмотров у определенного режиссера выдать фильмы того же режиссера 
 """
 class DirectorStrategy(StrategyRecommendation):
-    def __init__(self, user): #Строго по БД
+    def __init__(self, user:str): #Строго по БД
         super().__init__(user)
-        self.picked_name = user
+        self.picked_name = user # записываем имя пользователя
 
+    # данный метод создаёт словарь формата {фильм:режиссер}
     @staticmethod
     def _director_parser():
         directors_dict = {}
@@ -54,6 +60,7 @@ class DirectorStrategy(StrategyRecommendation):
             directors_dict[film_name] = film_data["director"]
         return directors_dict
 
+    # данный метод создаёт словарь формата {пользователь:[просмотренные фильмы]}
     @staticmethod
     def _film_parser():
         dict_of_films = {}
@@ -62,15 +69,20 @@ class DirectorStrategy(StrategyRecommendation):
         return dict_of_films
 
 
+    # данный метод преобразовывает данные для работы с ними
     def _transformation_of_data(self):
+        # передаем словари созданные до этого
         directors_dict = self._director_parser()
         dict_of_films = self._film_parser()
 
+        # создаем словарь формата {пользователь:[режиссеры которых смотрел пользователь]}
         new_dict_directors = {}
         for user_name, user_films in dict_of_films.items():
             if user_name == self.picked_name:
                 new_dict_directors[user_name] = list(map(lambda x: directors_dict[x], user_films))
 
+        ### можно ускорить
+        # создаем словарь формата {пользователь: [(режиссер, количество просмотров режиссера), ...]}
         directors_counter = {}
         for user_name, list_directors in new_dict_directors.items():
             directors_counter[user_name] = []
@@ -78,6 +90,8 @@ class DirectorStrategy(StrategyRecommendation):
                 counter = list_directors.count(director)
                 directors_counter[user_name].append((director, counter))
 
+        # распаковываем прошлый словарь в формат (пользователь, [(режиссер, количество просмотров режиссера), ...])
+        # а так же сортируем по параметру: "количество просмотров режиссера"
         sorted_directors_counter = None
         for user_name, list_of_directors in directors_counter.items():
             if user_name == self.picked_name:
