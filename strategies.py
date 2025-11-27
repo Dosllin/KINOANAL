@@ -99,7 +99,9 @@ class DirectorStrategy(StrategyRecommendation):
                 else:
                     fav_director = max(sorted_directors_counter[1], key=lambda x: x[1])
                     fav_list.append(fav_director)
-                    if fav_list[-1][1] != fav_list[-2][1]:
+                    if len(fav_list) == 1:
+                        break
+                    elif fav_list[-1][1] != fav_list[-2][1]:
                         fav_list.remove(fav_list[-1])
                     break
 
