@@ -4,16 +4,12 @@ from abc import ABC, abstractmethod
 users = Parsers.user_parser()
 films_data = Parsers.films_parser()
 
-
 class StrategyRecommendation(ABC):
     def __init__(self, user):
         self.user = user
     @abstractmethod
     def strategy(self):
         pass
-
-class FilterStrategy:
-    pass
 
 """
 распаковка джейсона в список тапмлов типа (фильм, рейтинг)
@@ -23,13 +19,19 @@ class FilterStrategy:
 class RatingStrategy:
     @staticmethod
     def strategy():
-        films_and_ratings = []
+        films_ratings = []
         for film_name, film_data in films_data.items():
-            film_rating = film_data["rating"]
-            average_film_rating = sum(film_rating) / len(film_rating)
-            films_and_ratings.append((film_name, average_film_rating))
-        sorted_list = sorted(films_and_ratings, key=lambda x: x[1], reverse=True)
-        return sorted_list[:3]
+            average_rating = sum(film_data["rating"]) / len(film_data["rating"])
+            films_ratings.append((film_name, average_rating))
+        sorted_list = sorted(films_ratings, key=lambda x: x[1], reverse=True)[:10]
+        return list(map(lambda x: x[0], sorted_list))
+    @staticmethod
+    def filtered_year(min_year=0, max_year=9999):
+        sorted_list = RatingStrategy.strategy()
+        return list(filter(lambda x: min_year <= films_data[x]['year'] <= max_year, sorted_list))
+
+
+
 """
 посчитать всех режиссеров которые смотрел пользователь, загнать в словарь:
 пользователь:{
@@ -41,7 +43,7 @@ class RatingStrategy:
 на основе максимального количества просмотров у определенного режиссера выдать фильмы того же режиссера 
 """
 class DirectorStrategy(StrategyRecommendation):
-    def __init__(self, user:str): #Строго по БД
+    def __init__(self, user): #Строго по БД
         super().__init__(user)
         self.picked_name = user
 
@@ -63,7 +65,6 @@ class DirectorStrategy(StrategyRecommendation):
     def _transformation_of_data(self):
         directors_dict = self._director_parser()
         dict_of_films = self._film_parser()
-        print(dict_of_films)
 
         new_dict_directors = {}
         for user_name, user_films in dict_of_films.items():
@@ -114,8 +115,16 @@ class DirectorStrategy(StrategyRecommendation):
         else:
             return "История просмотров пуста"
 
-
         return list_recommend
+
+    def filtered_year(self, min_year=0, max_year=9999):
+        strategy = DirectorStrategy(self.picked_name)
+        sorted_list = strategy.strategy()
+        return list(filter(lambda x: min_year <= films_data[x]['year'] <= max_year, sorted_list))
+    def filtered_rating(self, min_rating=0, max_rating=10):
+        strategy = DirectorStrategy(self.picked_name)
+        sorted_list = strategy.strategy()
+        return list(filter(lambda x: min_rating <= sum(films_data[x]["rating"]) / len(films_data[x]["rating"]) <= max_rating, sorted_list))
 
 
 
