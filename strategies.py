@@ -12,6 +12,8 @@ class StrategyRecommendation(ABC):
     def strategy(self):
         pass
 
+class FilterStrategy:
+    pass
 
 """
 распаковка джейсона в список тапмлов типа (фильм, рейтинг)
@@ -57,17 +59,16 @@ class DirectorStrategy(StrategyRecommendation):
             dict_of_films[user_name] = user_data["user_viewed_films"]
         return dict_of_films
 
+
     def _transformation_of_data(self):
         directors_dict = self._director_parser()
         dict_of_films = self._film_parser()
+        print(dict_of_films)
 
         new_dict_directors = {}
         for user_name, user_films in dict_of_films.items():
-            new_dict_directors[user_name] = []
-            for user_film in user_films:
-                for key, value in directors_dict.items():
-                    if user_film == key:
-                        new_dict_directors[user_name].append(value)
+            if user_name == self.picked_name:
+                new_dict_directors[user_name] = list(map(lambda x: directors_dict[x], user_films))
 
         directors_counter = {}
         for user_name, list_directors in new_dict_directors.items():
@@ -81,7 +82,6 @@ class DirectorStrategy(StrategyRecommendation):
             if user_name == self.picked_name:
                 sorted_directors_counter = (user_name, sorted(set(list_of_directors), key=lambda x: x[1], reverse=True))
                 break
-
         return sorted_directors_counter
 
     def strategy(self):
