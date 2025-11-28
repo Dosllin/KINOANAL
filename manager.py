@@ -1,3 +1,6 @@
+from dataclasses import dataclass, field
+from typing import List
+
 # Список всех жанров фильмов
 list_all_genre = ["action", "adventure", "animation", "biography", "comedy", "crime", "documentary", "drama", "fantasy",
                   "historical", "horror", "musical", "mystery", "romance", "science fiction", "thriller",
@@ -5,31 +8,26 @@ list_all_genre = ["action", "adventure", "animation", "biography", "comedy", "cr
 
 
 # Определение классов Film и User
+# Определение класса Film
+@dataclass(kw_only=True)
 class Film:
-    def __init__(self, id_film, title, genre, director, year, rating, description, image):
-        self.id_film = id_film  # уникальный идентификатор фильма
-        self.title = title  # название фильма
-        self.genre = genre  # жанр фильма
-        self.director = director  # режиссер фильма
-        self.year = year  # год выпуска фильма
-        self.rating = rating  # список оценок фильма
-        self.description = description
-        self.image = image
+    id_film: int
+    title: str
+    genre: List[str] = field(default_factory=list)
+    director: str
+    year: int
+    rating: List[int] = field(default_factory=list)
+    description: str
+    image: str
 
-    def __str__(self):
-        return f"Film(ID: {self.id_film}, Title: {self.title}, Genre: {self.genre}, Director: {self.director}, Year: {self.year}, Rating: {self.rating})"  # строковое представление фильма для удобства вывода
-
-
+# Определение класса User
+@dataclass(kw_only=True)
 class User:
-    def __init__(self, id_user, user_name, user_viewed_films, user_genre, user_wish_list):
-        self.id_user = id_user  # уникальный идентификатор пользователя
-        self.user_name = user_name  # имя пользователя
-        self.user_viewed_films = user_viewed_films  # список просмотренных пользователем фильмов
-        self.user_genre = user_genre  # список предпочитаемых жанров пользователя
-        self.user_wish_list = user_wish_list # Список отложенных фильмов
-
-    def __str__(self):
-        return f"User(ID: {self.id_user}, Name: {self.user_name}, Viewed Films: {[film.title for film in self.user_viewed_films]}, Preferred Genre: {self.user_genre}, Wish List: {self.user_wish_list})"  # строковое представление пользователя для удобства вывода
+    id_user: int
+    user_name: str
+    user_viewed_films: List[str] = field(default_factory=list)
+    user_genre: List[str] = field(default_factory=list)
+    user_wish_list: List[str] = field(default_factory=list)
 
 
 # Менеджер для работы с фильмами и пользователями
