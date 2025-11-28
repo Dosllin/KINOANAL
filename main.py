@@ -107,12 +107,12 @@ def login_sign_in():
 
     choice = input('Выберите действие: ')
     if choice == '1':  # Вход
-        name = input('Введите имя: ')
+        name = input('Введите имя: ').strip()
         if name in users.keys(): # Ищем имя в базе данных
             print('Добро пожаловать обратно,', name)
             current_user = users[name]
             print(current_user)
-            return User(users[name]['id_user'], name, users[name]['user_viewed_films'], users[name]['user_genre'], users[name]['wish_list'])
+            return User(id_user = users[name]['id_user'], user_name = name, user_viewed_films = users[name]['user_viewed_films'], user_genre = users[name]['user_genre'], user_wish_list = users[name]['wish_list'])
         else:
             print('Пользователь не найден. Пожалуйста, зарегистрируйтесь.')
             return 1
@@ -121,7 +121,7 @@ def login_sign_in():
         print('Доступные жанры:', ', '.join(list_all_genre))
         preferred_genre = input('Введите предпочитаемые жанры: ').replace(' ','').lower()  # Убираем пробелы и приводим к нижнему регистру
 
-        new_user = User(last_id + 1, name, [], preferred_genre.split(','), [])  # Создаем нового пользователя
+        new_user = User(id_user = last_id + 1, user_name = name, user_viewed_films = [], user_genre = preferred_genre.split(','), user_wish_list = [])  # Создаем нового пользователя
         last_id += 1  # Обновляем последний ID
 
         users[new_user.user_name] = {
@@ -135,7 +135,7 @@ def login_sign_in():
         with open(f'Database/user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
             json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print('Регистрация успешна.')
-        return User(last_id + 1, name, [], preferred_genre.split(','), []) #Создаю в классе User нового пользователя по данным которыми он ввёл
+        return User(id_user = last_id + 1, user_name = name, user_viewed_films = [], user_genre = preferred_genre.split(','), user_wish_list = []) #Создаю в классе User нового пользователя по данным которыми он ввёл
     elif choice == '3':
         print('Выход из программы')
         return 0
