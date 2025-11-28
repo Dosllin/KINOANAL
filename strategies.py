@@ -1,8 +1,6 @@
 from parsers import Parsers
 from abc import ABC, abstractmethod
 
-users = Parsers.user_parser()
-films_data = Parsers.films_parser()
 
 class StrategyRecommendation(ABC):
     def __init__(self, user):
@@ -17,12 +15,14 @@ class StrategyRecommendation(ABC):
 и отсортировать по рейтингу через лямбда
 """
 class RatingStrategy:
+    def __init__(self): #Строго по БД
+        self.users = Parsers.user_parser()
+        self.films_data = Parsers.films_parser()
     # основной метод
-    @staticmethod
-    def strategy():
+    def strategy(self):
         # создаём список формата (фильм, средний рейтинг)
         films_ratings = []
-        for film_name, film_data in films_data.items():
+        for film_name, film_data in self.films_data.items():
             average_rating = sum(film_data["rating"]) / len(film_data["rating"])
             films_ratings.append((film_name, average_rating))
         # сортируем список по параметру: "средний рейтинг" по его убыванию
@@ -31,10 +31,9 @@ class RatingStrategy:
         return list(map(lambda x: x[0], sorted_list))
 
     # метод сортировки по минимальному и максимальному году
-    @staticmethod
-    def filtered_year(min_year=0, max_year=9999):
-        sorted_list = RatingStrategy.strategy()
-        return list(filter(lambda x: min_year <= films_data[x]['year'] <= max_year, sorted_list))
+    def filtered_year(self,min_year=0, max_year=9999):
+        sorted_list = self.strategy()
+        return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, sorted_list))
 
 
 """
@@ -51,20 +50,22 @@ class DirectorStrategy(StrategyRecommendation):
     def __init__(self, user:str): #Строго по БД
         super().__init__(user)
         self.picked_name = user # записываем имя пользователя
+        self.users = Parsers.user_parser()
+        self.films_data = Parsers.films_parser()
 
     # данный метод создаёт словарь формата {фильм:режиссер}
-    @staticmethod
-    def _director_parser():
+
+    def _director_parser(self):
         directors_dict = {}
-        for film_name, film_data in films_data.items():
+        for film_name, film_data in self.films_data.items():
             directors_dict[film_name] = film_data["director"]
         return directors_dict
 
     # данный метод создаёт словарь формата {пользователь:[просмотренные фильмы]}
-    @staticmethod
-    def _film_parser():
+
+    def _film_parser(self):
         dict_of_films = {}
-        for user_name, user_data in users.items():
+        for user_name, user_data in self.users.items():
             dict_of_films[user_name] = user_data["user_viewed_films"]
         return dict_of_films
 
@@ -74,16 +75,17 @@ class DirectorStrategy(StrategyRecommendation):
         # передаем словари созданные до этого
         directors_dict = self._director_parser()
         dict_of_films = self._film_parser()
-
         # создаем словарь формата {пользователь:[режиссеры которых смотрел пользователь]}
         new_dict_directors = {}
         for user_name, user_films in dict_of_films.items():
+            print(user_name,self.picked_name)
             if user_name == self.picked_name:
                 new_dict_directors[user_name] = list(map(lambda x: directors_dict[x], user_films))
 
         ### можно ускорить
         # создаем словарь формата {пользователь: [(режиссер, количество просмотров режиссера), ...]}
         directors_counter = {}
+        print(new_dict_directors.items())
         for user_name, list_directors in new_dict_directors.items():
             directors_counter[user_name] = []
             for director in list_directors:
@@ -93,7 +95,9 @@ class DirectorStrategy(StrategyRecommendation):
         # распаковываем прошлый словарь в формат (пользователь, [(режиссер, количество просмотров режиссера), ...])
         # а так же сортируем по параметру: "количество просмотров режиссера"
         sorted_directors_counter = None
+        print(directors_counter.items())
         for user_name, list_of_directors in directors_counter.items():
+            print(user_name, self.picked_name)
             if user_name == self.picked_name:
                 sorted_directors_counter = (user_name, sorted(set(list_of_directors), key=lambda x: x[1], reverse=True))
                 break
@@ -134,13 +138,15 @@ class DirectorStrategy(StrategyRecommendation):
     def filtered_year(self, min_year=0, max_year=9999):
         strategy = DirectorStrategy(self.picked_name)
         sorted_list = strategy.strategy()
-        return list(filter(lambda x: min_year <= films_data[x]['year'] <= max_year, sorted_list))
+        return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, sorted_list))
     def filtered_rating(self, min_rating=0, max_rating=10):
         strategy = DirectorStrategy(self.picked_name)
         sorted_list = strategy.strategy()
-        return list(filter(lambda x: min_rating <= sum(films_data[x]["rating"]) / len(films_data[x]["rating"]) <= max_rating, sorted_list))
+        return list(filter(lambda x: min_rating <= sum(self.films_data[x]["rating"]) / len(self.films_data[x]["rating"]) <= max_rating, sorted_list))
 
 
+users = Parsers.user_parser()
+films_data = Parsers.films_parser()
 
 class StrategySimilarUsers(StrategyRecommendation):
     def __init__(self, user, other_users):
