@@ -3,10 +3,14 @@ import random
 import textwrap
 from term_image.image import from_url
 
+from Modules.user import User
 
-from strategies import *
-from manager import *
-from parsers import Parsers
+from Controlers.manager import FilmManager
+
+from Strategies.DirectorStrategy import DirectorStrategy
+from Strategies.StrategySimilarUsers import StrategySimilarUsers
+
+from Data.parsers import Parsers
 
 
 users = Parsers.user_parser()
@@ -27,6 +31,11 @@ films_data = Parsers.films_parser()
 # manager1.add_film(film3)
 # manager1.add_user_review(film1, 10)
 # print(user1)
+
+# Список всех жанров фильмов
+list_all_genre = ["action", "adventure", "animation", "biography", "comedy", "crime", "documentary", "drama", "fantasy",
+                  "historical", "horror", "musical", "mystery", "romance", "science fiction", "thriller",
+                  "war", "western", "family", "film noir", "coming-of-age", "superhero", "psychological", "satire"]
 
 # переменная для отслеживания последнего ID пользователя, чтобы при регистрации создавать уникальные ID
 last_id = max([users[user_name]['id_user'] for user_name in users]) if len(users) > 0 else 0
@@ -52,19 +61,19 @@ def film_preview(request: str): # Функция для отображения �
 
 def add_in_viewed_films(request: str): #Добавить фильм в просмотренные и обновить это в базе данных
     users[user.user_name]['user_viewed_films'].append(request)  # Добавляем название фильма в просмотренные пользователем
-    with open(f'Database/user.json', 'w', encoding="UTF-8") as file:  # Открываем файл для записи и я обязательно переписывю его целиком
+    with open(f'Data/user.json', 'w', encoding="UTF-8") as file:  # Открываем файл для записи и я обязательно переписывю его целиком
         json.dump(users, file, indent=5,ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
     print("Фильм добавлен в просмотренные")
 
 def add_in_wish_list(request: str): #Добавить фильм в отложенные и обновить это в базе данных
     users[user.user_name]['wish_list'].append(request)  # Добавляем название фильма в отложенные пользователя
-    with open(f'Database/user.json', 'w', encoding="UTF-8") as file:  # Открываем файл для записи и я обязательно переписывю его целиком
+    with open(f'Data/user.json', 'w', encoding="UTF-8") as file:  # Открываем файл для записи и я обязательно переписывю его целиком
         json.dump(users, file, indent=5,ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
     print("Фильм добавлен в отложенные")
 
 def add_rating(request: str, rating: int): #Добавить фильм в отложенные и обновить это в базе данных
     films_data[request]['rating'].append(rating)  # Добавляем Оценку фильма в отложенные пользователем
-    with open(f'Database/films.json', 'w',encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
+    with open(f'Data/films.json', 'w',encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
         json.dump(films_data, file, indent=5,ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
     print("Фильм добавлен в отложенные")
 
@@ -132,7 +141,7 @@ def login_sign_in():
             'wish_list': new_user.user_wish_list
         }  # Добавляем пользователя в словарь
 
-        with open(f'Database/user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
+        with open(f'Data/user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
             json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print('Регистрация успешна.')
         return User(id_user = last_id + 1, user_name = name, user_viewed_films = [], user_genre = preferred_genre.split(','), user_wish_list = []) #Создаю в классе User нового пользователя по данным которыми он ввёл
