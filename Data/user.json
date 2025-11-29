@@ -1,0 +1,255 @@
+{
+     "Никита": {
+          "id_user": 1,
+          "name": "Никита",
+          "user_viewed_films": [
+               "Человек-паук: Через вселенные",
+               "Человек-паук",
+               "Человек-паук: Вдали от дома",
+               "Брат",
+               "Жмурки",
+               "1+1",
+               "Голая правда",
+               "Бойцовский клуб",
+               "Спортлото-82"
+          ],
+          "user_genre": [
+               "comedy",
+               "fantasy",
+               "superhero",
+               "horror"
+          ],
+          "wish_list": [
+               "Игрок"
+          ]
+     },
+     "Илья": {
+          "id_user": 2,
+          "name": "Илья",
+          "user_viewed_films": [
+               "Человек-паук",
+               "100 вещей и ничего лишнего"
+          ],
+          "user_genre": [
+               "horror",
+               "thriller",
+               "psychological"
+          ],
+          "wish_list": []
+     },
+     "Карим": {
+          "id_user": 3,
+          "name": "Карим",
+          "user_viewed_films": [
+               "1+1"
+          ],
+          "user_genre": [
+               "animation",
+               "musical",
+               "western"
+          ],
+          "wish_list": []
+     },
+     "Амир": {
+          "id_user": 4,
+          "name": "Амир",
+          "user_viewed_films": [
+               "Извне",
+               "Брат",
+               "Жмурки",
+               "Сноуден",
+               "Копы 667",
+               "Черный двор",
+               "Человек-паук",
+               "Американская история ужасов"
+          ],
+          "user_genre": [
+               "action",
+               "adventure",
+               "comedy",
+               "crime",
+               "horror",
+               "thriller",
+               "superhero"
+          ],
+          "wish_list": []
+     },
+     "Лёха": {
+          "id_user": 5,
+          "name": "Лёха",
+          "user_viewed_films": ["Брат"],
+          "user_genre": [
+               "crime"
+          ],
+          "wish_list": []
+     },
+     "Андрей": {
+          "id_user": 6,
+          "name": "Андрей",
+          "user_viewed_films": [],
+          "user_genre": [
+               "mystery",
+               "thriller"
+          ],
+          "wish_list": []
+     },
+     "Александр": {
+          "id_user": 7,
+          "name": "Александр",
+          "user_viewed_films": [],
+          "user_genre": [
+               "animation",
+               "comedy"
+          ],
+          "wish_list": []
+     },
+     "Гоша": {
+          "id_user": 8,
+          "name": "Гоша",
+          "user_viewed_films": [],
+          "user_genre": [
+               "family"
+          ],
+          "wish_list": []
+     },
+     "Киррил": {
+          "id_user": 9,
+          "name": "Киррил",
+          "user_viewed_films": [],
+          "user_genre": [
+               "filmnoir"
+          ],
+          "wish_list": []
+     },
+     "Олег": {
+          "id_user": 10,
+          "name": "Олег",
+          "user_viewed_films": [],
+          "user_genre": [
+               "comedy",
+               "fantasy",
+               "superhero"
+          ],
+          "wish_list": []
+     },
+     "Оаг": {
+          "id_user": 10,
+          "name": "Оаг",
+          "user_viewed_films": [
+               "Человек-паук: Через вселенные",
+               "Человек-паук",
+               "Человек-паук: Вдали от дома",
+               "Брат",
+               "Жмурки",
+               "1+1"
+          ],
+          "user_genre": [
+               "comedy",
+               "fantasy",
+               "superhero"
+          ],
+          "wish_list": []
+     },
+     "Оasdаг": {
+          "id_user": 11,
+          "name": "Оаг",
+          "user_viewed_films": [
+               "Человек-паук: Через вселенные",
+               "Человек-паук",
+               "Человек-паук: Вдали от дома",
+               "Брат",
+               "1+1"
+          ],
+          "user_genre": [
+               "comedy",
+               "fantasy"
+          ],
+          "wish_list": []
+     },
+     "sadasd": {
+          "id_user": 111,
+          "name": "asdasdds",
+          "user_viewed_films": [
+               "Человек-паук: Через вселенные",
+               "Человек-паук",
+               "Человек-паук: Вдали от дома",
+               "Брат",
+               "1+1",
+               "Ворошиловский стрелок"
+          ],
+          "user_genre": [
+               "comedy",
+               "fantasy"
+          ],
+          "wish_list": []
+     },
+     "Катя": {
+          "id_user": 112,
+          "name": "Катя",
+          "user_viewed_films": [
+               "Астрал"
+          ],
+          "user_genre": [
+               "satire"
+          ],
+          "wish_list": []
+     },
+     "Лана": {
+          "id_user": 113,
+          "name": "Лана",
+          "user_viewed_films": [
+               "Очень странные дела",
+               "Американская история ужасов"
+          ],
+          "user_genre": [
+               "fantasy",
+               "horror"
+          ],
+          "wish_list": []
+     },
+     "Нурик": {
+          "id_user": 114,
+          "name": "Нурик",
+          "user_viewed_films": [
+               "Атака титанов"
+          ],
+          "user_genre": [
+               "animation"
+          ],
+          "wish_list": []
+     },
+     "Игорь": {
+          "id_user": 115,
+          "name": "Игорь",
+          "user_viewed_films": [
+               "Атака титанов",
+               "Наша Russia: Яйца судьбы",
+               "Оно",
+               "Эйфория"
+          ],
+          "user_genre": [
+               "biography",
+               "crime"
+          ],
+          "wish_list": [
+               "Флэш",
+               "Рестлер",
+               "Вечеринка на вылет"
+          ]
+     },
+     "Dr_gbeat": {
+          "id_user": 116,
+          "name": "Dr_gbeat",
+          "user_viewed_films": [
+               "Извне",
+               "В ожидании солнца",
+               "Как приручить дракона"
+          ],
+          "user_genre": [
+               "fantasy"
+          ],
+          "wish_list": [
+               "Годзилла и Конг: Новая империя"
+          ]
+     }
+}
