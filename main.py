@@ -97,33 +97,12 @@ def similar_algoritm():
             print("Некоректный ввод")
 
 
-# def random_films():
-#     print('Случайные фильмы!')
-#     list_random_films = random.sample(list(films_data), 10)
-#     for film in list_random_films:
-#         film_preview(film)
-#         print("1. Следующий фильм"
-#               "2. Добавить фильм в просмотренные",
-#               "3. Добавить фильм в отложенные",
-#               "4. Выйти из случайной подборки", sep='\n')
-#         choice = input("Введите команду: ")
-#         if choice == "1":
-#             continue
-#         elif choice == '2':
-#             user_manager = FilmManager(user)
-#             user_manager.add_in_viewed_films(film)
-#         elif choice == '3':
-#             user_manager = FilmManager(user)
-#             user_manager.add_in_wish_list(film)
-#         elif choice == '4':
-#             break
-
-
 ### MAIN MENU
 Flag_login = 1
 user = 0 # Просто для того, чтобы pycharm не ругался
 while Flag_login:
     user = login_sign_in()
+
     if user != 1:
         Flag_login = 0
         users = Parsers.user_parser()
@@ -139,6 +118,8 @@ if len(users[user.user_name]["user_viewed_films"]) == 0:
     input("Нажмите Enter, чтобы продолжить...")
     while len(users[user.user_name]["user_viewed_films"]) == 0:
         search_film(user)
+        users = Parsers.user_parser()
+        films_data = Parsers.films_parser()
 # DirectorStrategy1 = DirectorStrategy(user.user_name)
 # print(DirectorStrategy1.strategy())
 while True:
@@ -152,9 +133,13 @@ while True:
     choice_main_menu = input("Выберите действие: ")
     if choice_main_menu == '5':
         search_film(user)
+        users = Parsers.user_parser()
+        films_data = Parsers.films_parser()
     elif choice_main_menu  == '1':
+
         similar_algoritm()
     elif choice_main_menu == '2':
+
         print('----------------------------')
         print('Алгоритм на основе ваших любимых режиссеров')
         print('----------------------------')
