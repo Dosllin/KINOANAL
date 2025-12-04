@@ -2,19 +2,18 @@ import json
 from Data.parsers import Parsers
 from Modules.user import User
 
-users = Parsers.user_parser()
-films_data = Parsers.films_parser()
 
 list_all_genre = ["action", "adventure", "animation", "biography", "comedy", "crime", "documentary", "drama", "fantasy",
                     "historical", "horror", "musical", "mystery", "romance", "science fiction", "thriller",
                     "war", "western", "family", "film noir", "coming-of-age", "superhero", "psychological", "satire"]
 
-# переменная для отслеживания последнего ID пользователя, чтобы при регистрации создавать уникальные ID
-last_id = max([users[user_name]['id_user'] for user_name in users]) if len(users) > 0 else 0
-# В максе ищу самый большой id, чтобы по нему создавать новые, если данных в датабазе нет, то значение равно 0
 
 def login_sign_in():
-    global last_id
+    users = Parsers.user_parser()
+    # переменная для отслеживания последнего ID пользователя, чтобы при регистрации создавать уникальные ID
+    last_id = max([users[user_name]['id_user'] for user_name in users]) if len(users) > 0 else 0
+    # В максе ищу самый большой id, чтобы по нему создавать новые, если данных в датабазе нет, то значение равно 0
+
     print('1. Войти',
           '2. Зарегистрироваться',
           '3. Выйти из программы', sep='\n')
