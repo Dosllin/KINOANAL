@@ -3,10 +3,10 @@ from term_image.image import from_url
 
 from Data.parsers import Parsers
 
-users = Parsers.user_parser()
-films_data = Parsers.films_parser()
+
 
 def film_preview(request: str): # Функция для отображения фильма. Сюда подаётся название фильма
+    films_data = Parsers.films_parser()
     print(films_data[request])
     print('=========================================')
     try:
@@ -17,7 +17,9 @@ def film_preview(request: str): # Функция для отображения �
     print("Жанр:", films_data[request]['genre'])
     print("Режиссёр:", films_data[request]['director'])
     print("Год выпуска:", films_data[request]['year'])
+    print("Страна:", films_data[request]['countries'])
     print("Описание:")
     print(textwrap.fill(films_data[request]['description'], width=70))  # перенос каждые 70 символов (по пробелам)
     print("Средний рейтинг:",round(sum(films_data[request]['rating']) / len(films_data[request]['rating']),2) if films_data[request]['rating'] else "Нет оценок")
     print('=========================================')
+
