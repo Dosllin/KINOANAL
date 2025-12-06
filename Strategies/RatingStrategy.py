@@ -1,12 +1,22 @@
+from abc import ABC, abstractmethod
 from Data.parsers import Parsers
+
+
+class StrategyRecommendation(ABC):
+    def __init__(self, user):
+        self.user = user
+    @abstractmethod
+    def strategy(self):
+        pass
+
 
 """
 распаковка джейсона в список тапмлов формата (фильм, рейтинг)
 и отсортировать по рейтингу через лямбда
 """
-class RatingStrategy:
-    def __init__(self): #Строго по БД
-        self.users = Parsers.user_parser()
+class RatingStrategy(StrategyRecommendation):
+    def __init__(self, user): #Строго по БД
+        super().__init__(user)
         self.films_data = Parsers.films_parser()
 
     # основной метод
@@ -25,3 +35,4 @@ class RatingStrategy:
     def filtered_year(self,min_year=0, max_year=9999):
         sorted_list = self.strategy()
         return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, sorted_list))
+
