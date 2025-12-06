@@ -1,6 +1,4 @@
 from Data.parsers import Parsers
-from Modules.user import User
-from Modules.film import Film
 import json
 
 
