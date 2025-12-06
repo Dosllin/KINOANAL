@@ -50,14 +50,12 @@ class DirectorStrategy(StrategyRecommendation):
         # создаем словарь формата {пользователь:[режиссеры которых смотрел пользователь]}
         new_dict_directors = {}
         for user_name, user_films in dict_of_films.items():
-            print(user_name,self.picked_name)
             if user_name == self.picked_name:
                 new_dict_directors[user_name] = list(map(lambda x: directors_dict[x], user_films))
 
         ### можно ускорить
         # создаем словарь формата {пользователь: [(режиссер, количество просмотров режиссера), ...]}
         directors_counter = {}
-        print(new_dict_directors.items())
         for user_name, list_directors in new_dict_directors.items():
             directors_counter[user_name] = []
             for director in list_directors:
@@ -67,7 +65,6 @@ class DirectorStrategy(StrategyRecommendation):
         # распаковываем прошлый словарь в формат (пользователь, [(режиссер, количество просмотров режиссера), ...])
         # а так же сортируем по параметру: "количество просмотров режиссера"
         sorted_directors_counter = None
-        print(directors_counter.items())
         for user_name, list_of_directors in directors_counter.items():
             print(user_name, self.picked_name)
             if user_name == self.picked_name:
