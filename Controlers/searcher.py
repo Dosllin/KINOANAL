@@ -1,4 +1,4 @@
-from Controlers.display import film_preview
+from GUI.display import film_preview
 from Controlers.manager import FilmManager
 from Data.parsers import Parsers
 
