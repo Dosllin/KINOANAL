@@ -4,6 +4,7 @@ from Data.parsers import Parsers
 from GUI.activation import similar_algorithm
 from GUI.activation import director_algorithm
 from GUI.activation import rating_algorithm
+from GUI.activation import multi_algorithm
 from GUI.activation import random_activation
 
 def main():
@@ -40,6 +41,7 @@ def main():
         print("1. Рекомендации от похожих пользователей",
               "2. Рекомендация на основе любимых режиссеров",
               "3. Рекомендация по топу рейтинга",
+              "4. Рекомендация на основе всех стратегий",
               "6. Поиск фильма (Добавить просмотренные фильмы)",
               "7. 10 Случайных фильмов (Долой алгоритмы доверимся богу рандома)",
               "8. Выйти",sep='\n')
@@ -56,6 +58,8 @@ def main():
             director_algorithm(user)
         elif choice_main_menu == '3':
             rating_algorithm(user)
+        elif choice_main_menu == '4':
+            multi_algorithm(user, users_without_main_user)
         elif choice_main_menu == '6':
             search_film(user)
         elif choice_main_menu == '7':
