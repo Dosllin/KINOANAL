@@ -3,7 +3,7 @@ from Strategies.StrategySimilarUsers import StrategySimilarUsers
 from Strategies.DirectorStrategy import DirectorStrategy
 from Strategies.RatingStrategy import RatingStrategy
 from Strategies.Random import random_films
-
+from Strategies.MultiStrategy import MultiStrategy
 
 # Данные для фильтрации, если пользователь не ввёл фильтры
 filter_years = [-1000000000,100000000]
@@ -36,46 +36,50 @@ def similar_algorithm(user, users_without_main_user):
 
         algorithm_menu()
 
-        user_choice = int(input())
+        try:
+            user_choice = int(input())
 
-        if user_choice == 1:
-            main_strategy = StrategySimilarUsers(user, users_without_main_user)
-            films_list, films_list_little_similar = main_strategy.strategy(filter_years, filter_rating)[0], \
-            main_strategy.strategy(filter_years, filter_rating)[1]
-            show_a_recommended_movie(user, films_list) # У меня код в 2 частях повторялся, пай чарм посоветовал в отдельный деф закинуть
-
-
-            if len(films_list_little_similar) > 0:  # Если у пользователя ещё были фильмы с другими менее похожими людьми, то мы предлагаем показать такие фильмы
-                print("Может быть вам интересны ещё фильмы пользователей с кем у вас было меньше совпадений?")
-                user_choice = input("Введите да/нет: ").lower()
-                if user_choice == 'да':
-                    show_a_recommended_movie(user, films_list_little_similar)
+            if user_choice == 1:
+                main_strategy = StrategySimilarUsers(user, users_without_main_user)
+                films_list, films_list_little_similar = main_strategy.strategy(filter_years, filter_rating)[0], \
+                main_strategy.strategy(filter_years, filter_rating)[1]
+                show_a_recommended_movie(user, films_list) # У меня код в 2 частях повторялся, пай чарм посоветовал в отдельный деф закинуть
 
 
-        elif user_choice == 2:
-            while 1:
+                if len(films_list_little_similar) > 0:  # Если у пользователя ещё были фильмы с другими менее похожими людьми, то мы предлагаем показать такие фильмы
+                    print("Может быть вам интересны ещё фильмы пользователей с кем у вас было меньше совпадений?")
+                    user_choice = input("Введите да/нет: ").lower()
+                    if user_choice == 'да':
+                        show_a_recommended_movie(user, films_list_little_similar)
 
-                filter_menu()
 
-                user_choice = int(input("Введите команду: "))
+            elif user_choice == 2:
+                while 1:
 
-                if user_choice == 1:
-                    print('----------------------')
-                    min_year = int(input("Введите минимальный год: "))
-                    max_year = int(input("Введите максимальный год: "))
-                    filter_years = [min_year, max_year]
-                    print('----------------------')
-                elif user_choice == 2:
-                    print('----------------------')
-                    filter_rating = int(input("Введите минимальный рейтинг: "))
-                    print('----------------------')
-                elif user_choice == 3:
-                    break
-                else:
-                    print("Некорректный ввод")
-        elif user_choice == 3:
-            break
-        else:
+                    filter_menu()
+
+                    user_choice = int(input("Введите команду: "))
+
+                    if user_choice == 1:
+                        print('----------------------')
+                        min_year = int(input("Введите минимальный год: "))
+                        max_year = int(input("Введите максимальный год: "))
+                        filter_years = [min_year, max_year]
+                        print('----------------------')
+                    elif user_choice == 2:
+                        print('----------------------')
+                        filter_rating = int(input("Введите минимальный рейтинг: "))
+                        print('----------------------')
+                    elif user_choice == 3:
+                        break
+                    else:
+                        print("Некорректный ввод")
+            elif user_choice == 3:
+                break
+            else:
+                print("Некорректный ввод")
+
+        except ValueError:
             print("Некорректный ввод")
 
 
@@ -87,42 +91,46 @@ def director_algorithm(user):
 
         algorithm_menu()
 
-        user_choice = int(input())
+        try:
+            user_choice = int(input())
 
-        if user_choice == 1:
+            if user_choice == 1:
 
-            main_strategy = DirectorStrategy(user.user_name)
-            show_a_recommended_movie(user, main_strategy.strategy())
+                main_strategy = DirectorStrategy(user.user_name)
+                show_a_recommended_movie(user, main_strategy.strategy())
 
-        elif user_choice == 2:
-            while 1:
+            elif user_choice == 2:
+                while 1:
 
-                filter_menu()
+                    filter_menu()
 
-                user_choice = int(input("Введите команду: "))
+                    user_choice = int(input("Введите команду: "))
 
-                if user_choice == 1:
-                    print('----------------------')
-                    min_year = int(input("Введите минимальный год: "))
-                    max_year = int(input("Введите максимальный год: "))
-                    main_strategy = DirectorStrategy(user.user_name)
-                    show_a_recommended_movie(user, main_strategy.filtered_year(min_year, max_year))
+                    if user_choice == 1:
+                        print('----------------------')
+                        min_year = int(input("Введите минимальный год: "))
+                        max_year = int(input("Введите максимальный год: "))
+                        main_strategy = DirectorStrategy(user.user_name)
+                        show_a_recommended_movie(user, main_strategy.filtered_year(min_year, max_year))
 
-                    print('----------------------')
-                elif user_choice == 2:
-                    print('----------------------')
-                    min_rating = int(input("Введите минимальный рейтинг: "))
-                    max_rating = int(input("Введите максимальный рейтинг: "))
-                    main_strategy = DirectorStrategy(user.user_name)
-                    show_a_recommended_movie(user, main_strategy.filtered_rating(min_rating, max_rating))
-                    print('----------------------')
-                elif user_choice == 3:
-                    break
-                else:
-                    print("Некорректный ввод")
-        elif user_choice == 3:
-            break
-        else:
+                        print('----------------------')
+                    elif user_choice == 2:
+                        print('----------------------')
+                        min_rating = int(input("Введите минимальный рейтинг: "))
+                        max_rating = int(input("Введите максимальный рейтинг: "))
+                        main_strategy = DirectorStrategy(user.user_name)
+                        show_a_recommended_movie(user, main_strategy.filtered_rating(min_rating, max_rating))
+                        print('----------------------')
+                    elif user_choice == 3:
+                        break
+                    else:
+                        print("Некорректный ввод")
+            elif user_choice == 3:
+                break
+            else:
+                print("Некорректный ввод")
+
+        except ValueError:
             print("Некорректный ввод")
 
 
@@ -134,40 +142,100 @@ def rating_algorithm(user):
 
         algorithm_menu()
 
-        user_choice = int(input())
+        try:
+            user_choice = int(input())
 
-        if user_choice == 1:
+            if user_choice == 1:
 
-            main_strategy = RatingStrategy(user)
-            show_a_recommended_movie(user, main_strategy.strategy())
+                main_strategy = RatingStrategy(user)
+                show_a_recommended_movie(user, main_strategy.strategy())
 
-        elif user_choice == 2:
-            while 1:
-                print("==================================",
-                      "1. Установить года поиска",
-                      "2. Выйти к работе алгоритма",
-                      "==================================", sep="\n")
-                user_choice = int(input("Введите команду: "))
+            elif user_choice == 2:
+                while 1:
+                    print("==================================",
+                          "1. Установить года поиска",
+                          "2. Выйти к работе алгоритма",
+                          "==================================", sep="\n")
+                    user_choice = int(input("Введите команду: "))
 
-                if user_choice == 1:
-                    print('----------------------')
-                    min_year = int(input("Введите минимальный год: "))
-                    max_year = int(input("Введите максимальный год: "))
-                    main_strategy = RatingStrategy(user)
-                    show_a_recommended_movie(user, main_strategy.filtered_year(min_year, max_year))
+                    if user_choice == 1:
+                        print('----------------------')
+                        min_year = int(input("Введите минимальный год: "))
+                        max_year = int(input("Введите максимальный год: "))
+                        main_strategy = RatingStrategy(user)
+                        show_a_recommended_movie(user, main_strategy.filtered_year(min_year, max_year))
 
-                    print('----------------------')
+                        print('----------------------')
 
-                elif user_choice == 2:
-                    break
-                else:
-                    print("Некорректный ввод")
-        elif user_choice == 3:
-            break
-        else:
+                    elif user_choice == 2:
+                        break
+                    else:
+                        print("Некорректный ввод")
+            elif user_choice == 3:
+                break
+            else:
+                print("Некорректный ввод")
+
+        except ValueError:
+            print("Некорректный ввод")
+
+
+def multi_algorithm(user, users_without_main_user):
+    while True:
+        print('----------------------------')
+        print('Алгоритм на основе всех стратегий')
+        print('----------------------------')
+
+        algorithm_menu()
+
+        try:
+            user_choice = int(input())
+
+            director = DirectorStrategy(user.user_name).strategy()
+            similar = StrategySimilarUsers(user, users_without_main_user).strategy()[0]
+            rating = RatingStrategy(user.user_name).strategy()
+
+            if user_choice == 1:
+
+
+                main_strategy = MultiStrategy(user, director, similar, rating)
+                show_a_recommended_movie(user, main_strategy.strategy())
+
+            elif user_choice == 2:
+                while 1:
+
+                    filter_menu()
+
+                    user_choice = int(input("Введите команду: "))
+
+                    if user_choice == 1:
+                        print('----------------------')
+                        min_year = int(input("Введите минимальный год: "))
+                        max_year = int(input("Введите максимальный год: "))
+                        main_strategy = MultiStrategy(user, director*10, similar*12, rating*8)
+                        show_a_recommended_movie(user, main_strategy.filtered_year(min_year, max_year))
+
+                        print('----------------------')
+                    elif user_choice == 2:
+                        print('----------------------')
+                        min_rating = int(input("Введите минимальный рейтинг: "))
+                        max_rating = int(input("Введите максимальный рейтинг: "))
+                        main_strategy = MultiStrategy(user, director, similar, rating)
+                        show_a_recommended_movie(user, main_strategy.filtered_year(min_rating, max_rating))
+                        print('----------------------')
+                    elif user_choice == 3:
+                        break
+                    else:
+                        print("Некорректный ввод")
+            elif user_choice == 3:
+                break
+            else:
+                print("Некорректный ввод")
+
+        except ValueError:
             print("Некорректный ввод")
 
 
 def random_activation(user):
-    list_random_films = random_films(user)
+    list_random_films = random_films()
     show_a_recommended_movie(user, list_random_films)
