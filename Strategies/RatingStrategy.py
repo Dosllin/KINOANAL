@@ -1,13 +1,6 @@
-from abc import ABC, abstractmethod
+from Strategies.AbstractStrategy import StrategyRecommendation
 from Data.parsers import Parsers
 
-
-class StrategyRecommendation(ABC):
-    def __init__(self, user):
-        self.user = user
-    @abstractmethod
-    def strategy(self):
-        pass
 
 
 """
