@@ -6,6 +6,7 @@ from GUI.activation import director_algorithm
 from GUI.activation import rating_algorithm
 from GUI.activation import multi_algorithm
 from GUI.activation import random_activation
+from Controlers.account import menu_account
 from art import text2art
 
 
@@ -50,14 +51,17 @@ def main():
         print("1. Рекомендации от похожих пользователей",
               "2. Рекомендация на основе любимых режиссеров",
               "3. Рекомендация по топу рейтинга",
-              "4. Рекомендация на основе всех стратегий",
-              "6. Поиск фильма (Добавить просмотренные фильмы)",
+              "4. Рекомендации на основе жанров",
+              "5. Рекомендация на основе франшиз",
+              "6. Рекомендация на основе всех стратегий",
               "7. 10 Случайных фильмов (Долой алгоритмы доверимся богу рандома)",
-              "8. Выйти",sep='\n')
+              "8. Поиск фильма (Добавить просмотренные фильмы)",
+              "9. Посмотреть/изменить данные об аккаунте"
+              "10. Выйти",sep='\n')
 
         choice_main_menu = input("Выберите действие: ")
 
-        if choice_main_menu == '5':
+        if choice_main_menu == '8':
             search_film(user)
             users = Parsers.user_parser()
             films_data = Parsers.films_parser()
@@ -68,12 +72,16 @@ def main():
         elif choice_main_menu == '3':
             rating_algorithm(user)
         elif choice_main_menu == '4':
-            multi_algorithm(user, users_without_main_user)
+            pass
+        elif choice_main_menu == '5':
+            pass
         elif choice_main_menu == '6':
-            search_film(user)
+            multi_algorithm(user, users_without_main_user)
         elif choice_main_menu == '7':
             random_activation(user)
-        elif choice_main_menu == '8':
+        elif choice_main_menu == '9':
+            menu_account()
+        elif choice_main_menu == '10':
             print("До свидание!")
             break
 
