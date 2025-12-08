@@ -1,0 +1,1 @@
+from abc import ABC, abstractmethodclass StrategyRecommendation(ABC):    def __init__(self, user):        self.user = user    @abstractmethod    def strategy(self):        pass
