@@ -1,14 +1,7 @@
-from abc import abstractmethod, ABC
+from Strategies.AbstractStrategy import StrategyRecommendation
 from Data.parsers import Parsers
 from collections import Counter
 
-
-class StrategyRecommendation(ABC):
-    def __init__(self, user):
-        self.user = user
-    @abstractmethod
-    def strategy(self):
-        pass
 
 class MultiStrategy(StrategyRecommendation):
     def __init__(self, user: str, *strats):
