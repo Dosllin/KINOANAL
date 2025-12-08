@@ -27,12 +27,19 @@ def film_preview(request: str): # Функция для отображения �
 
 
 def show_a_recommended_movie(user, list_movies: list):
+    number_of_movies = 0
     for film in list_movies:
+        number_of_movies += 1
         film_preview(film)
         print("1. Следующий фильм",
               "2. Добавить фильм в просмотренные",
               "3. Добавить фильм в отложенные",
               "4. Выйти из подборки", sep='\n')
+
+        print()
+        print(f"<<< {number_of_movies}/{len(list_movies)} фильмов осталось >>>")
+        print()
+
         choice = input("Введите команду: ")
         if choice == "1":
             continue
