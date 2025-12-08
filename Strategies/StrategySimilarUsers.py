@@ -1,12 +1,6 @@
 from Data.parsers import Parsers
-from abc import ABC, abstractmethod
+from Strategies.AbstractStrategy import StrategyRecommendation
 
-class StrategyRecommendation(ABC):
-    def __init__(self, user):
-        self.user = user
-    @abstractmethod
-    def strategy(self):
-        pass
 
 users = Parsers.user_parser()
 films_data = Parsers.films_parser()
