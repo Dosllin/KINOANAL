@@ -8,6 +8,9 @@ def search_film(user):
     users = Parsers.user_parser()
     films_data = Parsers.films_parser()
     request = input("Введите название фильма: ").capitalize()
+    if ": " in request: # Учтём правило русского языка
+        request = request.split(': ')
+        request = request[0] + ': '  + request[1].capitalize()
     if request in films_data.keys():
         film_preview(request)
         print("1. Добавить фильм в просмотренные",
@@ -16,7 +19,7 @@ def search_film(user):
         if len(users[user.user_name]["user_viewed_films"]) > 0: # Если у пользователя нет ни одного фильма не даёт выйти из поиска
             print("4. Выйти из поиска")
 
-        choice = input()
+        choice = input("Введите команду: ")
         if choice == '1':
             user_manager = FilmManager(user)
             user_manager.add_in_viewed_films(request) # Записываю в БД, что пользователь смотрел фильм
