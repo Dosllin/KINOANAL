@@ -1,5 +1,5 @@
+from Strategies.AbstractStrategy import StrategyRecommendation
 from Data.parsers import Parsers
-from abc import ABC, abstractmethod
 from collections import Counter
 
 """
@@ -12,12 +12,7 @@ from collections import Counter
 отсортировать их по количеству не трогая пользователя
 на основе максимального количества просмотров у определенного режиссера выдать фильмы того же режиссера 
 """
-class StrategyRecommendation(ABC):
-    def __init__(self, user):
-        self.user = user
-    @abstractmethod
-    def strategy(self):
-        pass
+
 
 class DirectorStrategy(StrategyRecommendation):
     def __init__(self, user:str): #Строго по БД
