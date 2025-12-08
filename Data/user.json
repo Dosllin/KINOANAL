@@ -3,15 +3,11 @@
           "id_user": 1,
           "name": "Никита",
           "user_viewed_films": [
-               "Человек-паук: Через вселенные",
                "Человек-паук",
-               "Человек-паук: Вдали от дома",
                "Брат",
                "Жмурки",
                "1+1",
-               "Голая правда",
-               "Бойцовский клуб",
-               "Спортлото-82"
+               "Бойцовский клуб"
           ],
           "user_genre": [
                "comedy",
@@ -77,7 +73,9 @@
      "Лёха": {
           "id_user": 5,
           "name": "Лёха",
-          "user_viewed_films": ["Брат"],
+          "user_viewed_films": [
+               "Брат"
+          ],
           "user_genre": [
                "crime"
           ],
@@ -129,57 +127,6 @@
                "comedy",
                "fantasy",
                "superhero"
-          ],
-          "wish_list": []
-     },
-     "Оаг": {
-          "id_user": 10,
-          "name": "Оаг",
-          "user_viewed_films": [
-               "Человек-паук: Через вселенные",
-               "Человек-паук",
-               "Человек-паук: Вдали от дома",
-               "Брат",
-               "Жмурки",
-               "1+1"
-          ],
-          "user_genre": [
-               "comedy",
-               "fantasy",
-               "superhero"
-          ],
-          "wish_list": []
-     },
-     "Оasdаг": {
-          "id_user": 11,
-          "name": "Оаг",
-          "user_viewed_films": [
-               "Человек-паук: Через вселенные",
-               "Человек-паук",
-               "Человек-паук: Вдали от дома",
-               "Брат",
-               "1+1"
-          ],
-          "user_genre": [
-               "comedy",
-               "fantasy"
-          ],
-          "wish_list": []
-     },
-     "sadasd": {
-          "id_user": 111,
-          "name": "asdasdds",
-          "user_viewed_films": [
-               "Человек-паук: Через вселенные",
-               "Человек-паук",
-               "Человек-паук: Вдали от дома",
-               "Брат",
-               "1+1",
-               "Ворошиловский стрелок"
-          ],
-          "user_genre": [
-               "comedy",
-               "fantasy"
           ],
           "wish_list": []
      },
@@ -251,5 +198,79 @@
           "wish_list": [
                "Годзилла и Конг: Новая империя"
           ]
+     },
+     "I_love_hero": {
+          "id_user": 117,
+          "name": "I_love_hero",
+          "user_viewed_films": [
+               "Человек-паук",
+               "Человек-паук 2",
+               "Доктор Стрэндж: В мультивселенной безумия",
+               "Железный человек",
+               "Человек-паук 3: Враг в отражении"
+          ],
+          "user_genre": [
+               "superhero",
+               "fantasy",
+               "adventure",
+               "action"
+          ],
+          "wish_list": []
+     },
+     "Similar_for_user_love_Marvel_hero_1": {
+          "id_user": 118,
+          "name": "Similar_for_user_love_hero",
+          "user_viewed_films": [
+               "Человек-паук",
+               "Человек-паук 2",
+               "Мстители",
+               "Мстители: Эра Альтрона",
+               "Первый мститель: Другая война",
+               "Тор",
+               "Железный человек 3",
+               "Тор 2: Царство тьмы"
+          ],
+          "user_genre": [
+               "superhero",
+               "fantasy",
+               "adventure",
+               "action"
+          ],
+          "wish_list": []
+     },
+     "Similar_for_user_love_DC_hero_2": {
+          "id_user": 119,
+          "name": "Similar_for_user_love_hero_2",
+          "user_viewed_films": [
+               "Джокер",
+               "Бэтмен: Начало",
+               "Хранители",
+               "Чудо-женщина",
+               "Лига справедливости",
+               "Константин: Повелитель тьмы"
+          ],
+          "user_genre": [
+               "superhero",
+               "fantasy",
+               "adventure",
+               "action"
+          ],
+          "wish_list": []
+     },
+     "I_love_Scorsese": {
+          "id_user": 120,
+          "name": "I_love_Scorsese",
+          "user_viewed_films": [
+               "Славные парни (1990)",
+               "Таксист (1976)",
+               "Казино"
+          ],
+          "user_genre": [
+               "drama",
+               "crime",
+               "thriller",
+               "action"
+          ],
+          "wish_list": []
      }
 }
