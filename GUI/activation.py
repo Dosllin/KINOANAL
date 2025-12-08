@@ -1,5 +1,5 @@
 from GUI.display import show_a_recommended_movie
-from Strategies.StrategySimilarUsers import StrategySimilarUsers
+from Strategies.SimilarUsersStrategy import SimilarUsersStrategy
 from Strategies.DirectorStrategy import DirectorStrategy
 from Strategies.RatingStrategy import RatingStrategy
 from Strategies.Random import random_films
@@ -40,7 +40,7 @@ def similar_algorithm(user, users_without_main_user):
             user_choice = int(input())
 
             if user_choice == 1:
-                main_strategy = StrategySimilarUsers(user, users_without_main_user)
+                main_strategy = SimilarUsersStrategy(user, users_without_main_user)
                 films_list, films_list_little_similar = main_strategy.strategy(filter_years, filter_rating)[0], \
                 main_strategy.strategy(filter_years, filter_rating)[1]
                 show_a_recommended_movie(user, films_list) # У меня код в 2 частях повторялся, пай чарм посоветовал в отдельный деф закинуть
@@ -192,7 +192,7 @@ def multi_algorithm(user, users_without_main_user):
             user_choice = int(input())
 
             director = DirectorStrategy(user.user_name).strategy()
-            similar = StrategySimilarUsers(user, users_without_main_user).strategy()[0]
+            similar = SimilarUsersStrategy(user, users_without_main_user).strategy()[0]
             rating = RatingStrategy(user.user_name).strategy()
 
             if user_choice == 1:
