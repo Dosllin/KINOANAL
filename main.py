@@ -6,8 +6,13 @@ from GUI.activation import director_algorithm
 from GUI.activation import rating_algorithm
 from GUI.activation import multi_algorithm
 from GUI.activation import random_activation
+from art import text2art
+
 
 def main():
+    print(text2art("KinoAnal", font="big"))
+    print('Рекомендательная система фильмов: когда твой ИИ лучше знает, что ты хочешь посмотреть, чем ты сам')
+    print()
     users = Parsers.user_parser()
     films_data = Parsers.films_parser()
 
@@ -17,9 +22,13 @@ def main():
     user = 0 # Просто для того, чтобы pycharm не ругался
     while flag_login:
         user = login_sign_in()
+        if user == 0:
+            print("До свидание!")
+            return 0
         if user != 1:
             flag_login = 0
             users = Parsers.user_parser()
+
 
 
     users_without_main_user = users.copy()
