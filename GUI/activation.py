@@ -4,6 +4,7 @@ from Strategies.DirectorStrategy import DirectorStrategy
 from Strategies.RatingStrategy import RatingStrategy
 from Strategies.StrategyGenre import StrategyGenre
 from Strategies.Random import random_films
+from Strategies.MultiStrategy import MultiStrategy
 from Data.parsers import Parsers
 from thefuzz import process
 
@@ -343,5 +344,6 @@ def multi_algorithm(user, users_without_main_user):
 def random_activation(user):
     list_random_films = random_films(user)
     show_a_recommended_movie(user, list_random_films)
+
 
 
