@@ -10,7 +10,7 @@ def film_preview(request: str): # Функция для отображения �
     print(films_data[request])
     print('=========================================')
     try:
-        print(from_url(films_data[request]['image']))
+        print(from_url(films_data[request]['image'], width=40, height=20))
     except:  # Ошибка, когда не может получить изоброжение по ссылке
         print('Не смогли найти картинку 😥')
     print("Название:", films_data[request]['title'])
