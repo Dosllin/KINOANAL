@@ -1,5 +1,5 @@
 from GUI.display import show_a_recommended_movie
-from Strategies.StrategySimilarUsers import StrategySimilarUsers
+from Strategies.SimilarUsersStrategy import SimilarUsersStrategy
 from Strategies.DirectorStrategy import DirectorStrategy
 from Strategies.RatingStrategy import RatingStrategy
 from Strategies.StrategyGenre import StrategyGenre
@@ -343,4 +343,5 @@ def multi_algorithm(user, users_without_main_user):
 def random_activation(user):
     list_random_films = random_films(user)
     show_a_recommended_movie(user, list_random_films)
+
 
