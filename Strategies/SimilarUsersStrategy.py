@@ -12,9 +12,6 @@ class SimilarUsersStrategy(StrategyRecommendation):
         self.other_users = other_users
     @staticmethod
     def filter_for_user(film, recommendation_films, filter_years, filter_rating, country):
-        print("!!!!!")
-        print(film)
-        print("!!!!!")
         if (filter_years[0] <= films_data[film]['year'] <= filter_years[1] and
                 filter_rating <= sum(films_data[film]['rating']) / len(films_data[film]['rating'])):
             if country != '':
@@ -45,13 +42,11 @@ class SimilarUsersStrategy(StrategyRecommendation):
             for film in self.other_users[not_main_user]['user_viewed_films']:  # перебираю просмотренные фильмы другого пользователя и если фильмы другого пользователя есть в массиве просмотренных фильмов у главного то счётчик увеличивается на 1
                 if film in self.user.user_viewed_films:
                     count_watched_films+=1
-                    print(film,films_data[film]['year'])
                     matching_films.append(film)
             massive_similar_users.append([not_main_user,count_genre+count_watched_films,count_genre,count_watched_films,matching_genres,matching_films]) # Добавляю пользователей с кем было совпадение
         return massive_similar_users
 
     def strategy(self, filter_years=None, filter_rating=-10, country = ""):
-        print(country)
         if filter_years is None:
             filter_years =  [-10000000,10000000]
         recommendation_films= [] #Финальный список фильмов, которые будут предложены пользователю
@@ -60,7 +55,6 @@ class SimilarUsersStrategy(StrategyRecommendation):
 
         massive_similar_users = self.similar(massive_similar_users) # Подою в функцию поиска похожих людей, возвращает все совпадения с пользователями
         massive_similar_users = sorted(massive_similar_users, key=lambda x: x[1], reverse=True) # Сортирую, чтобы сначала были пользователи с большим количеством совпадений
-        print(massive_similar_users)
         max_count_similar = max([count_similar[1] for count_similar in massive_similar_users]) # Самое большое количество совпадений
 
         massive_similar_users = [user for user in massive_similar_users if user[1] > 0]  # Беру только пользователей с которыми
@@ -89,7 +83,6 @@ class SimilarUsersStrategy(StrategyRecommendation):
                 for film in self.other_users[name[0]]['user_viewed_films']:
                     if type(film) is not list:
                         self.filter_for_user(film,recommendation_films,filter_years,filter_rating,country)  # Беру фильмы пользователей с кем было совпадение и фильтрую их
-                print(recommendation_films)
                 self.deleting_repetitions(recommendation_films)
 
             else:
@@ -102,7 +95,6 @@ class SimilarUsersStrategy(StrategyRecommendation):
                         self.filter_for_user(film, recommendation_films, filter_years, filter_rating, country)
 
                 massive_little_similar_users = massive_little_similar_users[1:] # Убираю человека, который стал пользователем с самым большим количеством совпадений, из списка пользователей с маленьким совпадением
-                print(recommendation_films)
 
                 self.deleting_repetitions(recommendation_films)
 
@@ -110,14 +102,12 @@ class SimilarUsersStrategy(StrategyRecommendation):
             for film in self.other_users[name[0]]['user_viewed_films']:
                 if type(film) is not list:
                     self.filter_for_user(film, little_recommendation_films, filter_years, filter_rating, country)  # Беру фильмы пользователей с кем было совпадение и фильтрую их
-            print(little_recommendation_films)
             self.deleting_repetitions(little_recommendation_films)
 
         if len(recommendation_films)>0 and len(little_recommendation_films)>0: #Удаляем повторки в масивах
             for film in recommendation_films:
                 while film in little_recommendation_films:
                     little_recommendation_films.remove(film)
-                    print(film)
             self.deleting_repetitions(recommendation_films)
 
         return [list(set(recommendation_films)),list(set(little_recommendation_films)),massive_similar_users]
