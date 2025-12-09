@@ -14,9 +14,9 @@ from GUI.activation import director_algorithm
 from GUI.activation import rating_algorithm
 from GUI.activation import multi_algorithm
 from GUI.activation import random_activation
+from GUI.activation import genre_algorithm
 from Controlers.account import menu_account
 from art import text2art
-
 
 def main():
     print(text2art("KinoAnal", font="big"))
