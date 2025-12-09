@@ -286,5 +286,5 @@ def multi_algorithm(user, users_without_main_user):
 
 
 def random_activation(user):
-    list_random_films = random_films()
+    list_random_films = random_films(user)
     show_a_recommended_movie(user, list_random_films)
