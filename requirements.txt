@@ -1,3 +1,5 @@
 # Требуемая версия Python: >=3.8
-term-image>=0.6,<1.0; python_version >= "3.8"
+term-image>=0.6,<1.0 ; python_version >= "3.8"
 art>=6.1,<7.0
+thefuzz>=0.22,<0.24
+python-Levenshtein>=0.25,<0.26  # ускоряет thefuzz (опционально)
