@@ -1,6 +1,7 @@
 import json
 from Data.parsers import Parsers
 from Modules.user import User
+from thefuzz import process
 
 
 list_all_genre = ["action", "adventure", "animation", "biography", "comedy", "crime", "documentary", "drama", "fantasy",
@@ -31,10 +32,49 @@ def login_sign_in():
             return 1
     elif choice == '2':
         name = input('Введите Username: ').strip()
-        print('Доступные жанры:', ', '.join(list_all_genre))
-        preferred_genre = input('Введите предпочитаемые жанры: ').replace(' ','').lower()  # Убираем пробелы и приводим к нижнему регистру
+        print('Доступные жанры:')
+        count = 0
 
-        new_user = User(id_user = last_id + 1, user_name = name, user_viewed_films = [], user_genre = preferred_genre.split(','), user_wish_list = [])  # Создаем нового пользователя
+        list_five_genre = []
+        for genre in list_all_genre:
+            count += 1
+            list_five_genre.append(genre)
+            if count%5==0:
+                print(', '.join(list_five_genre))
+                list_five_genre = []
+        if len(list_five_genre)%5!=0:
+            print(', '.join(list_five_genre[len(list_five_genre)//5:]))
+
+        preferred_genre = []
+        Flag = 1
+        while len(preferred_genre) <1 or Flag == 1 :
+            print('Вводите предпочитаемые жанры по одному, когда вы посчитаете, что добавили все нужные жанры напишите: stop')
+            genre = input('Введите 1 предпочитаемый жанр: ')
+
+            if genre.strip().lower() == 'stop':
+                Flag = 0
+                break
+
+            if genre not in list_all_genre:
+                results = process.extract(genre, list_all_genre)
+                print()
+                print("Жанр с таким названием не был найден")
+                print(f"Возможно вы допустили ошибку в написании, вы имели в виду {results[0][0]}?")
+                print()
+                print('==============================')
+                print("1. Да (Добавить данный жанр)",
+                      "2. Нет (Продолжить вводить жанры)", sep='\n')
+                print('==============================')
+                print()
+                choice = input("Введите команду: ")
+                if choice == "1":
+                    preferred_genre.append(results[0][0])
+                else:
+                    continue
+            else:
+                preferred_genre.append(genre)
+
+        new_user = User(id_user = last_id + 1, user_name = name, user_viewed_films = [], user_genre = preferred_genre, user_wish_list = [])  # Создаем нового пользователя
         last_id += 1  # Обновляем последний ID
 
         users[new_user.user_name] = {
@@ -45,10 +85,10 @@ def login_sign_in():
             'wish_list': new_user.user_wish_list
         }  # Добавляем пользователя в словарь
 
-        with open(f'Data/user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
+        with open(f'Data/user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписываю его целиком
             json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print('Регистрация успешна.')
-        return User(id_user = last_id + 1, user_name = name, user_viewed_films = [], user_genre = preferred_genre.split(','), user_wish_list = []) #Создаю в классе User нового пользователя по данным которыми он ввёл
+        return User(id_user = last_id + 1, user_name = name, user_viewed_films = [], user_genre = preferred_genre, user_wish_list = []) #Создаю в классе User нового пользователя по данным которыми он ввёл
     elif choice == '3':
         print('Выход из программы')
         return 0
