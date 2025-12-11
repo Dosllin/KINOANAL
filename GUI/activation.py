@@ -15,6 +15,41 @@ filter_years = [-1000000000,100000000]
 filter_rating = -10
 country = ''
 
+def input_country_filter():
+    print('----------------------')
+    print("Введите название только одной страны")
+    print("Пример ввода: США")
+    print("Пример ввода: Россия")
+    films_data = Parsers.films_parser()
+    list_country = []
+    for name_film in films_data.keys():
+        list_country += films_data[name_film]['countries']
+    # print("Список стран:")
+    list_country = list(set(list_country))
+    country = input("Введите страну: ").strip()
+    results = process.extract(country, list_country, limit=5)
+    if country not in list_country:
+        print("Такой страны не найденно")
+        print(f"Возможно вы допустили ошибку в написании, вы имели в виду {results[0][0]}?")
+        print()
+        print('==============================')
+        print("1. Да (Сохранить выбранное значение)",
+              "2. Показать список стран",
+              "3. Нет (Выйти в главное меню)", sep='\n')
+        print('==============================')
+        print()
+        choice = input("Введите команду: ")
+        if choice == "1":
+            country = results[0][0]
+            return country
+        elif choice == "2":
+            for number, country in enumerate(list_country, start=1):
+                print(f"{number}. {country}")
+            return ""
+        else:
+            return ""
+    else:
+        return country
 
 def algorithm_menu():
     print("============================",
@@ -27,7 +62,7 @@ def filter_menu():
     print("==================================",
           "1. Установить года поиска",
           "2. Установить минимальный рейтинг",
-          "3. Установить страну",
+          "3. Установить страну выпуска"
           "4. Выйти к работе алгоритма",
           "==================================", sep="\n")
 
@@ -478,6 +513,82 @@ def multi_algorithm(user, users_without_main_user):
             print("Нажмите Enter что бы продолжить")
             input()
 
+
+def franchise_algorithm(user):
+    while True:
+        print('----------------------')
+        print('Алгоритм на основе франшиз')
+        print('----------------------')
+        algorithm_menu()
+
+        try:
+
+            user_choice = int(input())
+            if user_choice == 1:
+                main_strategy = franchise_algorithm(user)
+                show_a_recommended_movie(user, main_strategy.franchise_algorithm())
+
+            elif user_choice == 2:
+                break
+
+        except ValueError:
+            print("Некорректный ввод")
+
+
+def multi_algorithm(user, users_without_main_user):
+    while True:
+        print('----------------------------')
+        print('Алгоритм на основе всех стратегий')
+        print('----------------------------')
+
+        algorithm_menu()
+
+        try:
+            user_choice = int(input())
+
+            director = DirectorStrategy(user.user_name).strategy()
+            similar = SimilarUsersStrategy(user, users_without_main_user).strategy()[0]
+            rating = RatingStrategy(user.user_name).strategy()
+
+            if user_choice == 1:
+
+
+                main_strategy = MultiStrategy(user, director, similar, rating)
+                show_a_recommended_movie(user, main_strategy.strategy())
+
+            elif user_choice == 2:
+                while 1:
+
+                    filter_menu()
+
+                    user_choice = int(input("Введите команду: "))
+
+                    if user_choice == 1:
+                        print('----------------------')
+                        min_year = int(input("Введите минимальный год: "))
+                        max_year = int(input("Введите максимальный год: "))
+                        main_strategy = MultiStrategy(user, director*10, similar*12, rating*8)
+                        show_a_recommended_movie(user, main_strategy.filtered_year(min_year, max_year))
+
+                        print('----------------------')
+                    elif user_choice == 2:
+                        print('----------------------')
+                        min_rating = int(input("Введите минимальный рейтинг: "))
+                        max_rating = int(input("Введите максимальный рейтинг: "))
+                        main_strategy = MultiStrategy(user, director, similar, rating)
+                        show_a_recommended_movie(user, main_strategy.filtered_year(min_rating, max_rating))
+                        print('----------------------')
+                    elif user_choice == 3:
+                        break
+                    else:
+                        print("Некорректный ввод")
+            elif user_choice == 3:
+                break
+            else:
+                print("Некорректный ввод")
+
+        except ValueError:
+            print("Некорректный ввод")
 
 
 def random_activation(user):

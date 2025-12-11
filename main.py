@@ -69,7 +69,9 @@ def main():
 
         choice_main_menu = input("Выберите действие: ")
 
-        if choice_main_menu  == '1':
+        if choice_main_menu == '8':
+            search_film(user)
+        elif choice_main_menu  == '1':
             similar_algorithm(user, users_without_main_user)
         elif choice_main_menu == '2':
             director_algorithm(user)
@@ -83,10 +85,8 @@ def main():
             multi_algorithm(user, users_without_main_user)
         elif choice_main_menu == '7':
             random_activation(user)
-        elif choice_main_menu == '8':
-            search_film(user)
         elif choice_main_menu == '9':
-            menu_account(user)
+            menu_account()
         elif choice_main_menu == '10':
             print("До свидание!")
             break
