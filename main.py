@@ -14,9 +14,11 @@ from GUI.activation import director_algorithm
 from GUI.activation import rating_algorithm
 from GUI.activation import multi_algorithm
 from GUI.activation import random_activation
+from GUI.activation import franchise_algorithm
 from GUI.activation import genre_algorithm
 from Controlers.account import menu_account
 from art import text2art
+
 
 def main():
     print(text2art("KinoAnal", font="big"))
@@ -62,14 +64,12 @@ def main():
               "6. Рекомендация на основе всех стратегий",
               "7. 10 Случайных фильмов (Долой алгоритмы доверимся богу рандома)",
               "8. Поиск фильма (Добавить просмотренные фильмы)",
-              "9. Посмотреть/изменить данные об аккаунте"
+              "9. Посмотреть/изменить данные об аккаунте",
               "10. Выйти",sep='\n')
 
         choice_main_menu = input("Выберите действие: ")
 
-        if choice_main_menu == '8':
-            search_film(user)
-        elif choice_main_menu  == '1':
+        if choice_main_menu  == '1':
             similar_algorithm(user, users_without_main_user)
         elif choice_main_menu == '2':
             director_algorithm(user)
@@ -78,13 +78,15 @@ def main():
         elif choice_main_menu == '4':
             genre_algorithm(user)
         elif choice_main_menu == '5':
-            pass
+            franchise_algorithm(user)
         elif choice_main_menu == '6':
             multi_algorithm(user, users_without_main_user)
         elif choice_main_menu == '7':
             random_activation(user)
+        elif choice_main_menu == '8':
+            search_film(user)
         elif choice_main_menu == '9':
-            menu_account()
+            menu_account(user)
         elif choice_main_menu == '10':
             print("До свидание!")
             break
