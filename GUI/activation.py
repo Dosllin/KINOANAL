@@ -339,7 +339,7 @@ def genre_algorithm(user):
 def franchise_algorithm(user):
     while True:
         print('----------------------------')
-        print('Алгоритм на основе франшиз')
+        print('Алгоритм на основе жанров')
         print('----------------------------')
 
         algorithm_menu()
@@ -347,10 +347,10 @@ def franchise_algorithm(user):
         try:
             user_choice = int(input())
             if user_choice == 1:
-                main_strategy = FranchiseStrategy(user)
+                main_strategy = StrategyFranchise(user)
                 show_a_recommended_movie(user, main_strategy.strategy()[:10])
 
-             elif user_choice == 2:
+            elif user_choice == 2:
                 while 1:
                     print("==================================",
                           "1. Установить года поиска",
@@ -385,7 +385,6 @@ def franchise_algorithm(user):
                         print("Нажмите Enter что бы продолжить")
                         input()
 
-
             elif user_choice == 3:
                 break
             else:
@@ -414,9 +413,10 @@ def multi_algorithm(user, users_without_main_user):
             similar = SimilarUsersStrategy(user, users_without_main_user).strategy()[0]
             rating = RatingStrategy(user.user_name).strategy()
             genre = StrategyGenre(user).strategy()
+            franchise = StrategyFranchise(user).strategy()
 
             if user_choice == 1:
-                main_strategy = MultiStrategy(user, director*10, similar*12, rating*8, genre*12)
+                main_strategy = MultiStrategy(user, director*10, similar*12, rating*8, genre*12, franchise*10)
                 show_a_recommended_movie(user, main_strategy.strategy())
 
             elif user_choice == 2:
@@ -476,5 +476,3 @@ def multi_algorithm(user, users_without_main_user):
 def random_activation(user):
     list_random_films = random_films(user)
     show_a_recommended_movie(user, list_random_films)
-
-
