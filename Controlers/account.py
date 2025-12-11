@@ -7,17 +7,11 @@ list_all_genre = ["action", "adventure", "animation", "biography", "comedy", "cr
                     "historical", "horror", "musical", "mystery", "romance", "science fiction", "thriller",
                     "war", "western", "family", "film noir", "coming-of-age", "superhero", "psychological", "satire"]
 
+
 def menu_account(user):
-    users = Parsers.user_parser()  # Загружаем JSON пользователей
+    users = Parsers.user_parser() # Загружаем JSON пользователей
     while True:
 
-        print("НЕ РАБОТАЕТ")
-        print("НЕ РАБОТАЕТ")
-        print("НЕ РАБОТАЕТ")
-        print("НЕ РАБОТАЕТ")
-        print("НЕ РАБОТАЕТ")
-
-        films_data = Parsers.films_parser()
         user_data = users[user.user_name]
 
         print("============================",
@@ -29,7 +23,6 @@ def menu_account(user):
             "============================",sep='\n')
 
         user_choice = input("Выберите действие: ")
-
 
         if user_choice == '1':
 
@@ -47,7 +40,6 @@ def menu_account(user):
                 genre_delete = input("Введите жанр для удаления: ")
                 if genre_delete in user_data["user_genre"]:
                     user_data["user_genre"].remove(genre_delete)
-                    Parsers.user_saver(users)
                     print("Жанр удалён!")
                 else:
                     print("Такого жанра нет.")
@@ -62,12 +54,10 @@ def menu_account(user):
                     print("Этот жанр уже добавлен.")
                 else:
                     user_data["user_genre"].append(genre_add)
-                    Parsers.user_saver(users)
                     print("Жанр добавлен!")
 
             elif user_choice == '3':
                 pass
-
             else:
                 print("Некорректный ввод")
 
@@ -94,7 +84,7 @@ def menu_account(user):
             elif user_choice == '2':
 
                 film = input("Введите фильм для добавления: ")
-                if film in films_data["user_viewed_films"]:
+                if film in user_data["user_viewed_films"]:
                     user_data["user_viewed_films"].append(film)
                     print("Фильм добавлен.")
                 else:
@@ -129,10 +119,8 @@ def menu_account(user):
             elif user_choice == '2':
 
                 film = input("Введите фильм для добавления: ")
-                user_data["wish_list"].append(film)
-                print("Фильм добавлен в отложенные.")
-                if film in films_data["user_viewed_films"]:
-                    user_data["wish_list"].append(film)
+                if film in user_data["wish_list"]:
+                    user_data["wish_list"] = user_data["wish_list"].append(film)
                     print("Фильм добавлен в отложенные.")
                 else:
                     print("Фильм не найден.")
@@ -144,9 +132,22 @@ def menu_account(user):
 
 
         elif user_choice == '4':
-            # user_data
-            with open('user.json', 'w', encoding='utf-8') as f:
-                json.dump(user, f, ensure_ascii=False, indent=4)
+            users = Parsers.user_parser()
+
+            users[user.user_name] = user
+
+            users[user.user_name] = {
+                'id_user': user_data['id_user'],
+                'name': user_data['name'],
+                'user_viewed_films': user_data["user_viewed_films"],
+                'user_genre': user_data["user_genre"],
+                'wish_list': user_data["wish_list"]
+            }
+
+            # Сохраняем в
+            with open(f'Data/user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписываю его целиком
+                json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
+            print("Изменения сохранены.")
             break
 
         elif user_choice == '5':
