@@ -1,13 +1,5 @@
-from abc import ABC, abstractmethod
+from Strategies.AbstractStrategy import StrategyRecommendation
 from Data.parsers import Parsers
-
-
-class StrategyRecommendation(ABC):
-    def __init__(self, user):
-        self.user = user
-    @abstractmethod
-    def strategy(self):
-        pass
 
 
 class StrategyGenre(StrategyRecommendation):
@@ -64,10 +56,8 @@ class StrategyGenre(StrategyRecommendation):
         return list(film for film, score in sorted_films)
 
     # сортировка по минимальному и максимальному году
-    def filtered_year(self, min_year=0, max_year=9999):
-        sorted_list = self.strategy()
-        return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, sorted_list))
+    def filtered_year(self,min_year=0, max_year=9999):
+        return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, self.strategy()))
 
-    def filtered_country(self, country=''):
-        sorted_list = self.strategy()
-        return [film for film in sorted_list if country in self.films_data[film]["countries"]]
+    def filtered_country(self, country):
+        return list(filter(lambda x: country in self.films_data[x]["countries"], self.strategy()))
