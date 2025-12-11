@@ -86,7 +86,7 @@ def main():
         elif choice_main_menu == '7':
             random_activation(user)
         elif choice_main_menu == '9':
-            menu_account()
+            menu_account(user)
         elif choice_main_menu == '10':
             print("До свидание!")
             break
