@@ -3,7 +3,7 @@ from Strategies.SimilarUsersStrategy import SimilarUsersStrategy
 from Strategies.DirectorStrategy import DirectorStrategy
 from Strategies.RatingStrategy import RatingStrategy
 from Strategies.StrategyGenre import StrategyGenre
-from Strategies.StrategyGenre import FranchiseStrategy
+from Strategies.FranchiseStrategy import StrategyFranchise
 from Strategies.Random import random_films
 from Strategies.MultiStrategy import MultiStrategy
 from Data.parsers import Parsers
