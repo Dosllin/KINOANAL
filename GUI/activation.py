@@ -285,7 +285,7 @@ def genre_algorithm(user):
                     print("==================================",
                           "1. Установить года поиска",
                           "2. Установить страну",
-                          "3. Установить рейтинг"
+                          "3. Установить рейтинг",
                           "3. Выйти к работе алгоритма",
                           "==================================", sep="\n")
                     user_choice = int(input("Введите команду: "))
@@ -350,12 +350,11 @@ def franchise_algorithm(user):
                 main_strategy = FranchiseStrategy(user)
                 show_a_recommended_movie(user, main_strategy.strategy()[:10])
 
-            elif user_choice == 2:
+             elif user_choice == 2:
                 while 1:
                     print("==================================",
                           "1. Установить года поиска",
-                          "2. Установить страну",
-                          "3. Установить рейтинг"
+                          "2. Установить рейтинг",
                           "3. Выйти к работе алгоритма",
                           "==================================", sep="\n")
                     user_choice = int(input("Введите команду: "))
@@ -364,24 +363,17 @@ def franchise_algorithm(user):
                         print('----------------------')
                         min_year = int(input("Введите минимальный год: "))
                         max_year = int(input("Введите максимальный год: "))
-                        main_strategy = FranchiseStrategy(user).filtered_year(min_year, max_year)
+                        main_strategy = StrategyFranchise(user).filtered_year(min_year, max_year)
                         show_a_recommended_movie(user, main_strategy[:10])
                         exist_checker(main_strategy)
                         print('----------------------')
+
 
                     elif user_choice == 2:
                         print('----------------------')
-                        picked_country = input_country_filter()
-                        main_strategy = FranchiseStrategy(user.user_name).filtered_country(picked_country)
-                        show_a_recommended_movie(user, main_strategy[:10])
-                        exist_checker(main_strategy)
-                        print('----------------------')
-
-                    elif user_choice == 3:
-                        print('----------------------')
                         min_rating = int(input("Введите минимальный рейтинг: "))
                         max_rating = int(input("Введите максимальный рейтинг: "))
-                        main_strategy = FranchiseStrategy(user.user_name).filtered_rating(min_rating, max_rating)
+                        main_strategy = StrategyFranchise(user.user_name).filtered_rating(min_rating, max_rating)
                         show_a_recommended_movie(user, main_strategy)
                         exist_checker(main_strategy)
                         print('----------------------')
@@ -392,6 +384,7 @@ def franchise_algorithm(user):
                         print("Некорректный ввод")
                         print("Нажмите Enter что бы продолжить")
                         input()
+
 
             elif user_choice == 3:
                 break
@@ -483,4 +476,5 @@ def multi_algorithm(user, users_without_main_user):
 def random_activation(user):
     list_random_films = random_films(user)
     show_a_recommended_movie(user, list_random_films)
+
 
