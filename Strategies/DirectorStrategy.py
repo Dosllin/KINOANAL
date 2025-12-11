@@ -22,7 +22,6 @@ class DirectorStrategy(StrategyRecommendation):
         self.films_data = Parsers.films_parser()
 
     # данный метод создаёт словарь формата {фильм:режиссер}
-
     def _director_parser(self):
         directors_dict = {}
         for film_name, film_data in self.films_data.items():
@@ -30,13 +29,11 @@ class DirectorStrategy(StrategyRecommendation):
         return directors_dict
 
     # данный метод создаёт словарь формата {пользователь:[просмотренные фильмы]}
-
     def _film_parser(self):
         dict_of_films = {}
         for user_name, user_data in self.users.items():
             dict_of_films[user_name] = user_data["user_viewed_films"]
         return dict_of_films
-
 
     # данный метод преобразовывает данные для работы с ними
     def _transformation_of_data(self):
@@ -49,19 +46,15 @@ class DirectorStrategy(StrategyRecommendation):
             if user_name == self.picked_name:
                 new_dict_directors[user_name] = list(map(lambda x: directors_dict[x], user_films))
 
-        ### можно ускорить
         # создаем словарь формата {пользователь: [(режиссер, количество просмотров режиссера), ...]}
         directors_counter = {}
         for user_name, list_directors in new_dict_directors.items():
             directors_counter[user_name] = list(Counter(list_directors).items())
 
-
         # распаковываем прошлый словарь в формат (пользователь, [(режиссер, количество просмотров режиссера), ...])
         # а так же сортируем по параметру: "количество просмотров режиссера"
         sorted_directors_counter = sorted(directors_counter.items(), key=lambda x: x[1], reverse=True)[0]
-
         return sorted_directors_counter
-
 
     def strategy(self):
         film_directors_dict = self._director_parser()
@@ -96,10 +89,11 @@ class DirectorStrategy(StrategyRecommendation):
         return list_recommend
 
     def filtered_year(self, min_year=0, max_year=9999):
-        sorted_list = self.strategy()
-        return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, sorted_list))
+        return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, self.strategy()))
 
     def filtered_rating(self, min_rating=0, max_rating=10):
-        sorted_list = self.strategy()
-        return list(filter(lambda x: min_rating <= sum(self.films_data[x]["rating"]) / len(self.films_data[x]["rating"]) <= max_rating, sorted_list))
-      
+        return list(filter(lambda x: min_rating <= sum(self.films_data[x]["rating"]) / len(self.films_data[x]["rating"]) <= max_rating, self.strategy()))
+
+    def filtered_country(self, country):
+        return list(filter(lambda x: country in self.films_data[x]["countries"], self.strategy()))
+
