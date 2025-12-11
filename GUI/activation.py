@@ -339,7 +339,7 @@ def genre_algorithm(user):
 def franchise_algorithm(user):
     while True:
         print('----------------------------')
-        print('Алгоритм на основе жанров')
+        print('Алгоритм на основе франшиз')
         print('----------------------------')
 
         algorithm_menu()
@@ -483,3 +483,4 @@ def multi_algorithm(user, users_without_main_user):
 def random_activation(user):
     list_random_films = random_films(user)
     show_a_recommended_movie(user, list_random_films)
+
