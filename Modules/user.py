@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Dict
 
 # Определение класса User
 @dataclass(kw_only=True)
@@ -9,3 +9,4 @@ class User:
     user_viewed_films: List[str] = field(default_factory=list)
     user_genre: List[str] = field(default_factory=list)
     user_wish_list: List[str] = field(default_factory=list)
+    user_ratings: Dict[str, int] = field(default_factory=dict)

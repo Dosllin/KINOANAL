@@ -1,276 +1,295 @@
 {
-     "Никита": {
-          "id_user": 1,
-          "name": "Никита",
-          "user_viewed_films": [
-               "Человек-паук",
-               "Брат",
-               "Жмурки",
-               "1+1",
-               "Бойцовский клуб"
-          ],
-          "user_genre": [
-               "comedy",
-               "fantasy",
-               "superhero",
-               "horror"
-          ],
-          "wish_list": [
-               "Игрок"
-          ]
-     },
-     "Илья": {
-          "id_user": 2,
-          "name": "Илья",
-          "user_viewed_films": [
-               "Человек-паук",
-               "100 вещей и ничего лишнего"
-          ],
-          "user_genre": [
-               "horror",
-               "thriller",
-               "psychological"
-          ],
-          "wish_list": []
-     },
-     "Карим": {
-          "id_user": 3,
-          "name": "Карим",
-          "user_viewed_films": [
-               "1+1"
-          ],
-          "user_genre": [
-               "animation",
-               "musical",
-               "western"
-          ],
-          "wish_list": []
-     },
-     "Амир": {
-          "id_user": 4,
-          "name": "Амир",
-          "user_viewed_films": [
-               "Извне",
-               "Брат",
-               "Жмурки",
-               "Сноуден",
-               "Копы 667",
-               "Черный двор",
-               "Человек-паук",
-               "Американская история ужасов"
-          ],
-          "user_genre": [
-               "action",
-               "adventure",
-               "comedy",
-               "crime",
-               "horror",
-               "thriller",
-               "superhero"
-          ],
-          "wish_list": []
-     },
-     "Лёха": {
-          "id_user": 5,
-          "name": "Лёха",
-          "user_viewed_films": [
-               "Брат"
-          ],
-          "user_genre": [
-               "crime"
-          ],
-          "wish_list": []
-     },
-     "Андрей": {
-          "id_user": 6,
-          "name": "Андрей",
-          "user_viewed_films": [],
-          "user_genre": [
-               "mystery",
-               "thriller"
-          ],
-          "wish_list": []
-     },
-     "Александр": {
-          "id_user": 7,
-          "name": "Александр",
-          "user_viewed_films": [],
-          "user_genre": [
-               "animation",
-               "comedy"
-          ],
-          "wish_list": []
-     },
-     "Гоша": {
-          "id_user": 8,
-          "name": "Гоша",
-          "user_viewed_films": [],
-          "user_genre": [
-               "family"
-          ],
-          "wish_list": []
-     },
-     "Киррил": {
-          "id_user": 9,
-          "name": "Киррил",
-          "user_viewed_films": [],
-          "user_genre": [
-               "filmnoir"
-          ],
-          "wish_list": []
-     },
-     "Олег": {
-          "id_user": 10,
-          "name": "Олег",
-          "user_viewed_films": [],
-          "user_genre": [
-               "comedy",
-               "fantasy",
-               "superhero"
-          ],
-          "wish_list": []
-     },
-     "Катя": {
-          "id_user": 112,
-          "name": "Катя",
-          "user_viewed_films": [
-               "Астрал"
-          ],
-          "user_genre": [
-               "satire"
-          ],
-          "wish_list": []
-     },
-     "Лана": {
-          "id_user": 113,
-          "name": "Лана",
-          "user_viewed_films": [
-               "Очень странные дела",
-               "Американская история ужасов"
-          ],
-          "user_genre": [
-               "fantasy",
-               "horror"
-          ],
-          "wish_list": []
-     },
-     "Нурик": {
-          "id_user": 114,
-          "name": "Нурик",
-          "user_viewed_films": [
-               "Атака титанов"
-          ],
-          "user_genre": [
-               "animation"
-          ],
-          "wish_list": []
-     },
-     "Игорь": {
-          "id_user": 115,
-          "name": "Игорь",
-          "user_viewed_films": [
-               "Атака титанов",
-               "Наша Russia: Яйца судьбы",
-               "Оно",
-               "Эйфория"
-          ],
-          "user_genre": [
-               "biography",
-               "crime"
-          ],
-          "wish_list": [
-               "Флэш",
-               "Рестлер",
-               "Вечеринка на вылет"
-          ]
-     },
-     "Dr_gbeat": {
-          "id_user": 116,
-          "name": "Dr_gbeat",
-          "user_viewed_films": [
-               "Извне",
-               "В ожидании солнца",
-               "Как приручить дракона"
-          ],
-          "user_genre": [
-               "fantasy"
-          ],
-          "wish_list": [
-               "Годзилла и Конг: Новая империя"
-          ]
-     },
-     "I_love_hero": {
-          "id_user": 117,
-          "name": "I_love_hero",
-          "user_viewed_films": [
-               "Человек-паук",
-               "Человек-паук 2",
-               "Доктор Стрэндж: В мультивселенной безумия",
-               "Железный человек",
-               "Человек-паук 3: Враг в отражении"
-          ],
-          "user_genre": [
-               "superhero",
-               "fantasy",
-               "adventure",
-               "action"
-          ],
-          "wish_list": []
-     },
-     "Similar_for_user_love_Marvel_hero_1": {
-          "id_user": 118,
-          "name": "Similar_for_user_love_hero",
-          "user_viewed_films": [
-               "Человек-паук",
-               "Человек-паук 2",
-               "Мстители",
-               "Мстители: Эра Альтрона",
-               "Первый мститель: Другая война",
-               "Тор",
-               "Железный человек 3",
-               "Тор 2: Царство тьмы"
-          ],
-          "user_genre": [
-               "superhero",
-               "fantasy",
-               "adventure",
-               "action"
-          ],
-          "wish_list": []
-     },
-     "Similar_for_user_love_DC_hero_2": {
-          "id_user": 119,
-          "name": "Similar_for_user_love_hero_2",
-          "user_viewed_films": [
-               "Джокер",
-               "Бэтмен: Начало",
-               "Хранители",
-               "Чудо-женщина",
-               "Лига справедливости",
-               "Константин: Повелитель тьмы"
-          ],
-          "user_genre": [
-               "superhero",
-               "fantasy",
-               "adventure",
-               "action"
-          ],
-          "wish_list": []
-     },
-     "I_love_Scorsese": {
-          "id_user": 120,
-          "name": "I_love_Scorsese",
-          "user_viewed_films": [
-               "Славные парни (1990)",
-               "Таксист (1976)",
-               "Казино"
-          ],
-          "user_genre": [
-               "drama",
-               "crime",
-               "thriller",
-               "action"
-          ],
-          "wish_list": []
-     }
+    "Никита": {
+        "id_user": 1,
+        "name": "Никита",
+        "user_viewed_films": [
+            "Человек-паук",
+            "Брат",
+            "Жмурки",
+            "1+1",
+            "Бойцовский клуб"
+        ],
+        "user_genre": [
+            "comedy",
+            "fantasy",
+            "superhero",
+            "horror"
+        ],
+        "wish_list": [
+            "Игрок"
+        ],
+        "user_ratings": {}
+    },
+    "Илья": {
+        "id_user": 2,
+        "name": "Илья",
+        "user_viewed_films": [
+            "Человек-паук",
+            "100 вещей и ничего лишнего"
+        ],
+        "user_genre": [
+            "horror",
+            "thriller",
+            "psychological"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Карим": {
+        "id_user": 3,
+        "name": "Карим",
+        "user_viewed_films": [
+            "1+1"
+        ],
+        "user_genre": [
+            "animation",
+            "musical",
+            "western"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Амир": {
+        "id_user": 4,
+        "name": "Амир",
+        "user_viewed_films": [
+            "Извне",
+            "Брат",
+            "Жмурки",
+            "Сноуден",
+            "Копы 667",
+            "Черный двор",
+            "Человек-паук",
+            "Американская история ужасов"
+        ],
+        "user_genre": [
+            "action",
+            "adventure",
+            "comedy",
+            "crime",
+            "horror",
+            "thriller",
+            "superhero"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Лёха": {
+        "id_user": 5,
+        "name": "Лёха",
+        "user_viewed_films": [
+            "Брат"
+        ],
+        "user_genre": [
+            "crime"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Андрей": {
+        "id_user": 6,
+        "name": "Андрей",
+        "user_viewed_films": [],
+        "user_genre": [
+            "mystery",
+            "thriller"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Александр": {
+        "id_user": 7,
+        "name": "Александр",
+        "user_viewed_films": [],
+        "user_genre": [
+            "animation",
+            "comedy"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Гоша": {
+        "id_user": 8,
+        "name": "Гоша",
+        "user_viewed_films": [],
+        "user_genre": [
+            "family"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Киррил": {
+        "id_user": 9,
+        "name": "Киррил",
+        "user_viewed_films": [],
+        "user_genre": [
+            "filmnoir"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Олег": {
+        "id_user": 10,
+        "name": "Олег",
+        "user_viewed_films": [],
+        "user_genre": [
+            "comedy",
+            "fantasy",
+            "superhero"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Катя": {
+        "id_user": 112,
+        "name": "Катя",
+        "user_viewed_films": [
+            "Астрал"
+        ],
+        "user_genre": [
+            "satire"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Лана": {
+        "id_user": 113,
+        "name": "Лана",
+        "user_viewed_films": [
+            "Очень странные дела",
+            "Американская история ужасов"
+        ],
+        "user_genre": [
+            "fantasy",
+            "horror"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Нурик": {
+        "id_user": 114,
+        "name": "Нурик",
+        "user_viewed_films": [
+            "Атака титанов"
+        ],
+        "user_genre": [
+            "animation"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Игорь": {
+        "id_user": 115,
+        "name": "Игорь",
+        "user_viewed_films": [
+            "Атака титанов",
+            "Наша Russia: Яйца судьбы",
+            "Оно",
+            "Эйфория"
+        ],
+        "user_genre": [
+            "biography",
+            "crime"
+        ],
+        "wish_list": [
+            "Флэш",
+            "Рестлер",
+            "Вечеринка на вылет"
+        ],
+        "user_ratings": {}
+    },
+    "Dr_gbeat": {
+        "id_user": 116,
+        "name": "Dr_gbeat",
+        "user_viewed_films": [
+            "Извне",
+            "В ожидании солнца",
+            "Как приручить дракона"
+        ],
+        "user_genre": [
+            "fantasy"
+        ],
+        "wish_list": [
+            "Годзилла и Конг: Новая империя"
+        ],
+        "user_ratings": {}
+    },
+    "I_love_hero": {
+        "id_user": 117,
+        "name": "I_love_hero",
+        "user_viewed_films": [
+            "Человек-паук",
+            "Человек-паук 2",
+            "Доктор Стрэндж: В мультивселенной безумия",
+            "Железный человек",
+            "Человек-паук 3: Враг в отражении"
+        ],
+        "user_genre": [
+            "superhero",
+            "fantasy",
+            "adventure",
+            "action"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Similar_for_user_love_Marvel_hero_1": {
+        "id_user": 118,
+        "name": "Similar_for_user_love_hero",
+        "user_viewed_films": [
+            "Человек-паук",
+            "Человек-паук 2",
+            "Мстители",
+            "Мстители: Эра Альтрона",
+            "Первый мститель: Другая война",
+            "Тор",
+            "Железный человек 3",
+            "Тор 2: Царство тьмы"
+        ],
+        "user_genre": [
+            "superhero",
+            "fantasy",
+            "adventure",
+            "action"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "Similar_for_user_love_DC_hero_2": {
+        "id_user": 119,
+        "name": "Similar_for_user_love_hero_2",
+        "user_viewed_films": [
+            "Джокер",
+            "Бэтмен: Начало",
+            "Хранители",
+            "Чудо-женщина",
+            "Лига справедливости",
+            "Константин: Повелитель тьмы"
+        ],
+        "user_genre": [
+            "superhero",
+            "fantasy",
+            "adventure",
+            "action"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    },
+    "I_love_Scorsese": {
+        "id_user": 120,
+        "name": "I_love_Scorsese",
+        "user_viewed_films": [
+            "Славные парни (1990)",
+            "Таксист (1976)",
+            "Казино"
+        ],
+        "user_genre": [
+            "drama",
+            "crime",
+            "thriller",
+            "action"
+        ],
+        "wish_list": [],
+        "user_ratings": {}
+    }
 }

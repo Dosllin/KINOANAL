@@ -18,8 +18,9 @@ def menu_account(user):
             "1. Изменить предпочитаемые жанры",
             "2. Изменить историю просмотров",
             "3. Изменить список отложенных",
-            "4. Сохранить изменения и выйти в меню",
-            "5. Не сохранять и выйти в меню",
+            "4. Посмотреть/изменить оценки фильмов",
+            "5. Сохранить изменения и выйти в меню",
+            "6. Не сохранять и выйти в меню",
             "============================",sep='\n')
 
         user_choice = input("Выберите действие: ")
@@ -132,6 +133,42 @@ def menu_account(user):
 
 
         elif user_choice == '4':
+
+            print("============================",
+                  "1. Посмотреть все оценки",
+                  "2. Удалить оценку фильма",
+                  "3. Выйти назад",
+                  "============================", sep='\n')
+
+            user_choice = input("Выберите действие: ")
+
+            if user_choice == '1':
+                if 'user_ratings' not in user_data or not user_data["user_ratings"]:
+                    print("У вас пока нет оценок.")
+                else:
+                    print("Ваши оценки:")
+                    for film, rating in user_data["user_ratings"].items():
+                        print(f"  {film}: {rating}/10")
+
+            elif user_choice == '2':
+                if 'user_ratings' not in user_data or not user_data["user_ratings"]:
+                    print("У вас пока нет оценок для удаления.")
+                else:
+                    print("Ваши оценки:", list(user_data["user_ratings"].keys()))
+                    film = input("Введите название фильма для удаления оценки: ")
+                    if film in user_data["user_ratings"]:
+                        del user_data["user_ratings"][film]
+                        print("Оценка удалена.")
+                    else:
+                        print("Оценка для этого фильма не найдена.")
+
+            elif user_choice == '3':
+                pass
+            else:
+                print("Некорректный ввод")
+
+
+        elif user_choice == '5':
             users = Parsers.user_parser()
 
             users[user.user_name] = user
@@ -141,7 +178,8 @@ def menu_account(user):
                 'name': user_data['name'],
                 'user_viewed_films': user_data["user_viewed_films"],
                 'user_genre': user_data["user_genre"],
-                'wish_list': user_data["wish_list"]
+                'wish_list': user_data["wish_list"],
+                'user_ratings': user_data.get("user_ratings", {})
             }
 
             # Сохраняем в
@@ -150,7 +188,7 @@ def menu_account(user):
             print("Изменения сохранены.")
             break
 
-        elif user_choice == '5':
+        elif user_choice == '6':
             break
 
 

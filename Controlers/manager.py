@@ -25,8 +25,17 @@ class FilmManager:
             json.dump(self.users, file, indent=5, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print("Фильм добавлен в отложенные")
 
-    def add_rating(self, request: str, rating: int):  # Добавить фильм в отложенные и обновить это в базе данных
-        self.films_data[request]['rating'].append(rating)  # Добавляем Оценку фильма в отложенные пользователем
+    def add_rating(self, request: str, rating: int):  # Добавить оценку фильму и обновить это в базе данных
+        self.films_data[request]['rating'].append(rating)  # Добавляем Оценку фильма в базу фильмов
         with open(f'Data/films.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписывю его целиком
             json.dump(self.films_data, file, indent=5, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
-        print("Фильм добавлен в отложенные")
+        
+        # Добавляем оценку в данные пользователя
+        if 'user_ratings' not in self.users[self.user.user_name]:
+            self.users[self.user.user_name]['user_ratings'] = {}
+        self.users[self.user.user_name]['user_ratings'][request] = rating
+        self.user.user_ratings[request] = rating
+        with open(f'Data/user.json', 'w', encoding="UTF-8") as file:
+            json.dump(self.users, file, indent=5, ensure_ascii=False)
+        
+        print("Оценка фильму добавлена")
