@@ -161,6 +161,9 @@ def menu_account(user):
                         del user_data["user_ratings"][film]
                         
                         # Также удаляем оценку из данных фильма для согласованности
+                        # Примечание: Поскольку рейтинги фильмов хранятся как список без привязки к пользователям,
+                        # мы удаляем первое вхождение этого значения. Если несколько пользователей дали одинаковую оценку,
+                        # может быть удалена не та оценка. Для полного решения потребуется изменить структуру данных фильмов.
                         films_data = Parsers.films_parser()
                         if film in films_data and rating_value in films_data[film]['rating']:
                             films_data[film]['rating'].remove(rating_value)
