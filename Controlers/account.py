@@ -157,7 +157,16 @@ def menu_account(user):
                     print("Ваши оценки:", list(user_data["user_ratings"].keys()))
                     film = input("Введите название фильма для удаления оценки: ")
                     if film in user_data["user_ratings"]:
+                        rating_value = user_data["user_ratings"][film]
                         del user_data["user_ratings"][film]
+                        
+                        # Также удаляем оценку из данных фильма для согласованности
+                        films_data = Parsers.films_parser()
+                        if film in films_data and rating_value in films_data[film]['rating']:
+                            films_data[film]['rating'].remove(rating_value)
+                            with open(f'Data/films.json', 'w', encoding="UTF-8") as file:
+                                json.dump(films_data, file, indent=5, ensure_ascii=False)
+                        
                         print("Оценка удалена.")
                     else:
                         print("Оценка для этого фильма не найдена.")

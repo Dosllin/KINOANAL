@@ -89,7 +89,7 @@ def login_sign_in():
         with open(f'Data/user.json', 'w', encoding="UTF-8") as file:  # открываем файл для записи и я обязательно переписываю его целиком
             json.dump(users, file, indent=4, ensure_ascii=False)  # Сохраняем обновленный словарь пользователей в файл, indent - отступы для читаемости, ensure_ascii=False - для поддержки кириллицы
         print('Регистрация успешна.')
-        return User(id_user = last_id + 1, user_name = name, user_viewed_films = [], user_genre = preferred_genre, user_wish_list = [], user_ratings = {}) #Создаю в классе User нового пользователя по данным которыми он ввёл
+        return User(id_user = last_id, user_name = name, user_viewed_films = [], user_genre = preferred_genre, user_wish_list = [], user_ratings = {}) #Создаю в классе User нового пользователя по данным которыми он ввёл
     elif choice == '3':
         print('Выход из программы')
         return 0
