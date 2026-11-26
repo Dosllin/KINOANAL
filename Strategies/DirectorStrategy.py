@@ -1,4 +1,4 @@
-from Strategies.AbstractStrategy import StrategyRecommendation
+from Strategies.AbstractStrategy import RankedStrategy
 from Data.parsers import Parsers
 from collections import Counter
 
@@ -14,7 +14,7 @@ from collections import Counter
 """
 
 
-class DirectorStrategy(StrategyRecommendation):
+class DirectorStrategy(RankedStrategy):
     def __init__(self, user:str): #Строго по БД
         super().__init__(user)
         self.picked_name = user # записываем имя пользователя
@@ -56,7 +56,7 @@ class DirectorStrategy(StrategyRecommendation):
         sorted_directors_counter = sorted(directors_counter.items(), key=lambda x: x[1], reverse=True)[0]
         return sorted_directors_counter
 
-    def strategy(self):
+    def ranked_films(self):
         film_directors_dict = self._director_parser()
         dict_films = self._film_parser()
         sorted_directors_counter = self._transformation_of_data()
@@ -84,16 +84,6 @@ class DirectorStrategy(StrategyRecommendation):
                         list_recommend.append(name_of_film)
 
         else:
-            return "История просмотров пуста"
+            return []
 
         return list_recommend
-
-    def filtered_year(self, min_year=0, max_year=9999):
-        return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, self.strategy()))
-
-    def filtered_rating(self, min_rating=0, max_rating=10):
-        return list(filter(lambda x: min_rating <= sum(self.films_data[x]["rating"]) / len(self.films_data[x]["rating"]) <= max_rating, self.strategy()))
-
-    def filtered_country(self, country):
-        return list(filter(lambda x: country in self.films_data[x]["countries"], self.strategy()))
-

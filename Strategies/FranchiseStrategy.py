@@ -1,10 +1,10 @@
-from Strategies.AbstractStrategy import StrategyRecommendation
+from Strategies.AbstractStrategy import RankedStrategy
 from Data.parsers import Parsers
 
 
 
 
-class StrategyFranchise(StrategyRecommendation):
+class StrategyFranchise(RankedStrategy):
     def __init__(self, user):
         super().__init__(user)
         self.films_data = Parsers.films_parser()
@@ -12,8 +12,6 @@ class StrategyFranchise(StrategyRecommendation):
 
     # метод для получения любимых жанров(сначала из пользователя, потом из его просмотренных фильмов)
     def get_user_franchises(self):
-        print(self.user)
-        print(self.users[self.user])
         user_data = self.users[self.user]
         viewed_films = user_data["user_viewed_films"] # просмотренные фильмы пользователя
 
@@ -32,14 +30,13 @@ class StrategyFranchise(StrategyRecommendation):
         return list(viewed_franchises)
 
 
-    def strategy(self):
+    def ranked_films(self):
         user_franchises = self.get_user_franchises()
-        print("Франшизы пользователя:", user_franchises)
         user_viewed = set(self.users[self.user]["user_viewed_films"])
         recommended_films = []
         # проходим по всем фильмам в базе
         for film_name, film_data in self.films_data.items():
-            film_franchise = film_data["franchise"]
+            film_franchise = film_data.get("franchise")
             # уже просмотренные - пропускаем или если у фильма нет поля franchise — пропускаем или franchise = ""
             if film_name in user_viewed or "franchise" not in film_data or not film_franchise:
                 continue
@@ -47,9 +44,3 @@ class StrategyFranchise(StrategyRecommendation):
             if film_franchise in user_franchises:
                 recommended_films.append(film_name)
         return recommended_films
-
-    def filtered_year(self,min_year=0, max_year=9999):
-        return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, self.strategy()))
-
-    def filtered_country(self, country):
-        return list(filter(lambda x: country in self.films_data[x]["countries"], self.strategy()))
