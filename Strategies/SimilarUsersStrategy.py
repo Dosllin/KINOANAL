@@ -55,9 +55,10 @@ class SimilarUsersStrategy(StrategyRecommendation):
 
         massive_similar_users = self.similar(massive_similar_users) # Подою в функцию поиска похожих людей, возвращает все совпадения с пользователями
         massive_similar_users = sorted(massive_similar_users, key=lambda x: x[1], reverse=True) # Сортирую, чтобы сначала были пользователи с большим количеством совпадений
-        max_count_similar = max([count_similar[1] for count_similar in massive_similar_users]) # Самое большое количество совпадений
-
-        massive_similar_users = [user for user in massive_similar_users if user[1] > 0]  # Беру только пользователей с которыми
+        massive_similar_users = [entry for entry in massive_similar_users if entry[1] > 0]
+        if not massive_similar_users:
+            return [[], [], []]
+        max_count_similar = massive_similar_users[0][1]
         massive_little_similar_users = [user for user in massive_similar_users if user[1] != max_count_similar and user[1] > 0]  # Беру только пользователей с большим количеством совпадений
         massive_big_similar_users = [user for user in massive_similar_users if user[1] == max_count_similar]  # Беру только пользователей с меньшим количеством совпадений
 

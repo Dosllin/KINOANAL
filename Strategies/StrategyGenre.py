@@ -1,16 +1,10 @@
-from abc import ABC, abstractmethod
+from Strategies.AbstractStrategy import RankedStrategy
 from Data.parsers import Parsers
 
 
-class StrategyRecommendation(ABC):
-    def __init__(self, user):
-        self.user = user
-    @abstractmethod
-    def strategy(self):
-        pass
+class StrategyGenre(RankedStrategy):
+    limit = 10
 
-
-class StrategyGenre(StrategyRecommendation):
     def __init__(self, user):
         super().__init__(user)
         self.films_data = Parsers.films_parser()
@@ -34,7 +28,7 @@ class StrategyGenre(StrategyRecommendation):
                 favourite_genres.append(genre)
         return favourite_genres
 
-    def strategy(self):
+    def ranked_films(self):
         # user_data = self.users[self.user.user_name] мб
         favourite_genres = self.get_user_favourite_genres()
         user_viewed = set(self.users[self.user.user_name]["user_viewed_films"]) # для удаления уже просмотренных
@@ -58,16 +52,7 @@ class StrategyGenre(StrategyRecommendation):
         if not film_scores:
             return []
 
-        # сортируем фильмы по убыванию очков и берём топ-10
-        sorted_films = sorted(film_scores.items(), key=lambda x: x[1], reverse=True)[:10]
+        # сортируем фильмы по убыванию очков
+        sorted_films = sorted(film_scores.items(), key=lambda x: x[1], reverse=True)
 
         return list(film for film, score in sorted_films)
-
-    # сортировка по минимальному и максимальному году
-    def filtered_year(self, min_year=0, max_year=9999):
-        sorted_list = self.strategy()
-        return list(filter(lambda x: min_year <= self.films_data[x]['year'] <= max_year, sorted_list))
-
-    def filtered_country(self, country=''):
-        sorted_list = self.strategy()
-        return [film for film in sorted_list if country in self.films_data[film]["countries"]]
